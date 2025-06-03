@@ -15,13 +15,17 @@
                     class="form-input"
                     required
                     minlength="3"
+                    placeholder="Correo o usuario"
                     [(ngModel)]="identifier"
                     #identifierModel="ngModel"
-                    [ngClass]="{'invalid-input': identifierModel.invalid && identifierModel.touched}"
+                    (ngModelChange)="identifier = identifier.trim()"
+                    [ngClass]="{'invalid-input': identifierModel.invalid && identifierModel.touched, 
+                                'valid-input': identifierModel.valid && identifierModel.touched}"
                 />
                 <div class="error-message" *ngIf="identifierModel.touched && identifierModel.invalid">
                     <span *ngIf="identifierModel.errors?.['required']">Este campo es obligatorio.</span>
                     <span *ngIf="identifierModel.errors?.['minlength']">Debe tener al menos 3 caracteres.</span>
+                    
                 </div>
             </div>
 
@@ -36,16 +40,25 @@
                     required
                     minlength="8"
                     pattern="^(?=.*[A-Z])(?=.*\d).{8,}$"
+                    placeholder="Contraseña"
                     [(ngModel)]="password"
                     #passwordModel="ngModel"
-                    [ngClass]="{'invalid-input': passwordModel.invalid && passwordModel.touched}"
+                    (ngModelChange)="password = password.trim()"
+                    [ngClass]="{'invalid-input': passwordModel.invalid && passwordModel.touched, 
+                                'valid-input': passwordModel.valid && passwordModel.touched}"
+                    (focus)="passwordFocused = true"
+                    (blur)="onPasswordBlur()"
                 />
-                <div class="error-message" *ngIf="passwordModel.touched && passwordModel.invalid">
-                    <span *ngIf="passwordModel.errors?.['required']">La contraseña es obligatoria.</span>
-                    <span *ngIf="passwordModel.errors?.['minlength']">Debe tener al menos 8 caracteres.</span>
-                    <span *ngIf="passwordModel.errors?.['pattern']">
-                        Debe contener al menos una mayúscula y un número.
-                    </span>
+                <!-- Texto siempre visible, cambia de color según validación después de blur -->
+                <small
+                    class="password-criteria"
+                    [class.password-criteria-invalid]="passwordTouched && passwordModel.invalid"
+                    [class.password-criteria-focused]="passwordFocused"
+                    >
+                    Debe tener al menos 8 caracteres, incluir una mayúscula y un número.
+                </small>
+                <div class="error-message" *ngIf="passwordTouched && passwordModel.errors?.['required']">
+                    Este campo es obligatorio.
                 </div>
             </div>
 

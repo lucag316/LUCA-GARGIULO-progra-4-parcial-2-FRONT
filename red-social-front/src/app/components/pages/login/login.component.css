@@ -55,12 +55,16 @@ label {
 .invalid-input {
     border-color: var(--color-coral-red) !important;
 }
+.valid-input {
+    border-color: #2ecc71 !important;
+}
 
 .error-message {
     color: var(--color-coral-red);
     font-size: 0.85rem;
     margin-top: 0.3rem;
     font-weight: 500;
+    transition: opacity 0.3s ease;
 }
 
 .login-button {
@@ -102,4 +106,20 @@ label {
 .register-link a:hover {
     color: var(--color-secondary);
     text-decoration: underline;
+}
+
+.password-criteria {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-dark-gray);
+    margin-top: 0.2rem;
+    transition: color 0.3s ease;
+}
+
+.password-criteria-focused {
+    font-weight: 600;
+}
+
+.password-criteria-invalid {
+    color: var(--color-coral-red);
 }

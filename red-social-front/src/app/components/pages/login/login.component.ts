@@ -23,6 +23,8 @@ export class LoginComponent {
 
     loading: boolean = false;
     isBrowser: boolean;
+    passwordFocused: boolean = false;
+    passwordTouched: boolean = false;
     
     constructor(
         private router: Router,
@@ -37,7 +39,11 @@ export class LoginComponent {
 
 
     async onLogin() {
-        /*if (!this.identifier || !this.password) {
+
+        this.identifier = this.identifier.trim();
+        this.password = this.password.trim();
+
+        if (!this.identifier || !this.password) {
             this.showMessage('Todos los campos son obligatorios.', true);
             return;
         }
@@ -51,7 +57,7 @@ export class LoginComponent {
 
         this.loading = true;
 
-        try {
+        /*try {
             const { error, user } = await this.authService.login(this.identifier, this.password);
             
             if (error) {
@@ -73,6 +79,11 @@ export class LoginComponent {
         } finally {
             this.loading = false;
         }*/
+    }
+
+    onPasswordBlur() {
+        this.passwordFocused = false;
+        this.passwordTouched = true;
     }
 
     showMessage(message: string, isError: boolean = false) {
