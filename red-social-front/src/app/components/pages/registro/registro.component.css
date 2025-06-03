@@ -1,0 +1,121 @@
+
+/* Contenedor general centrado */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--color-white);
+    min-height: 100vh;
+}
+
+/* Tarjeta */
+.register-card {
+    background-color: var(--color-light-cyan);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Título */
+.register-title {
+    text-align: center;
+    color: var(--color-dark-blue);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+/* Grupo de formularios */
+.form-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-dark-blue);
+}
+
+/* Inputs */
+.form-input {
+    padding: 0.6rem 0.8rem;
+    font-size: 1rem;
+    border: 2px solid var(--color-secondary);
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 5px var(--color-primary);
+}
+
+/* Estilo para inputs inválidos */
+.invalid-input {
+    border-color: var(--color-coral-red);
+    background-color: #ffecec;
+}
+
+.valid-input {
+    border-color: #2ecc71;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: var(--color-coral-red);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+
+/* Criterio de contraseña */
+.password-criteria {
+    font-size: 0.8rem;
+    color: var(--color-dark-gray);
+    margin-top: 0.2rem;
+    transition: color 0.3s ease;
+}
+
+.password-criteria-invalid {
+    color: var(--color-coral-red);
+}
+
+/* Selector de perfil */
+select.form-input {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%232ec4b6" height="24" viewBox="0 0 24 24" width="24"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1.2rem;
+}
+
+/* Botón de registro */
+.register-button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: var(--color-secondary);
+}
+
+.register-button:disabled {
+    background-color: var(--color-secondary);
+    cursor: not-allowed;
+}
