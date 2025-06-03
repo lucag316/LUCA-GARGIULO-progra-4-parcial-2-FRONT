@@ -1,1 +1,57 @@
-/* You can add global styles to this file, and also import other style files */
+
+
+/* Estilos globales - variables de color */
+:root {
+    --color-primary: #ff9f1c;       /* Naranja fuerte */
+    --color-secondary: #ffbf69;     /* Naranja claro */
+    --color-white: #ffffff;          /* Blanco */
+    --color-light-cyan: #cbf3f0;    /* Celeste claro */
+    --color-teal: #2ec4b6;          /* Verde azulado */
+
+    /* Colores adicionales */
+    --color-dark-blue: #011627;     /* Azul oscuro */
+    --color-coral-red: #e71d36;     /* Rojo coral */
+    --color-dark-gray: #4a4a4a;     /* Gris oscuro */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    min-height: 100vh;
+    background-color: var(--color-white);
+    color: var(--color-dark-blue);
+}
+
+a:hover {
+    color: var(--color-primary);
+}
+
+/* Botones primarios */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-secondary);
+}
+
+/* Fondo de tarjetas, etc */
+.card {
+    background-color: var(--color-light-cyan);
+    border-radius: 8px;
+    padding: 1em;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
