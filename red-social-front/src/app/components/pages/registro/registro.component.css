@@ -1,5 +1,8 @@
+/* ==========================================================================
+   1. LAYOUT GENERAL
+   ========================================================================== */
 
-/* Contenedor general centrado */
+/* Contenedor principal centrado vertical y horizontalmente */
 .register-container {
     display: flex;
     justify-content: center;
@@ -9,17 +12,24 @@
     min-height: 100vh;
 }
 
-/* Tarjeta */
+/* Tarjeta donde se renderiza el formulario de registro */
 .register-card {
+    margin-top: 30px;
+    margin-bottom: 30px;
     background-color: var(--color-light-cyan);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     max-width: 500px;
     width: 100%;
+    animation: fadeInUp 0.6s ease-out;
 }
 
-/* Título */
+/* ==========================================================================
+   2. TIPOGRAFÍA Y TÍTULOS
+   ========================================================================== */
+
+/* Título del formulario */
 .register-title {
     text-align: center;
     color: var(--color-dark-blue);
@@ -28,55 +38,106 @@
     font-weight: 700;
 }
 
-/* Grupo de formularios */
-.form-group {
-    margin-bottom: 1.2rem;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Labels */
+/* Etiquetas de cada campo del formulario */
 .form-group label {
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: var(--color-dark-blue);
 }
 
-/* Inputs */
+/* ==========================================================================
+   3. ESTRUCTURA DEL FORMULARIO
+   ========================================================================== */
+
+/* Contenedor de cada input con su label y mensaje de error */
+.form-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Envoltorio para íconos ✔ y ❌ */
+.input-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+/* ==========================================================================
+   4. INPUTS (CAMPOS DE TEXTO Y SELECT)
+   ========================================================================== */
+
+/* Estilos comunes para campos de texto */
 .form-input {
     padding: 0.6rem 0.8rem;
+    width: 90%;
     font-size: 1rem;
     border: 2px solid var(--color-secondary);
     border-radius: 8px;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
+/* Estado enfocado */
 .form-input:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 5px var(--color-primary);
 }
 
-/* Estilo para inputs inválidos */
+/* Select estilizado con ícono flecha custom */
+select.form-input {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%232ec4b6" height="24" viewBox="0 0 24 24" width="24"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1.2rem;
+}
+
+/* ==========================================================================
+   5. VALIDACIÓN VISUAL (Inputs válidos / inválidos)
+   ========================================================================== */
+
+/* Estilo de borde rojo y fondo claro para input inválido */
 .invalid-input {
     border-color: var(--color-coral-red);
     background-color: #ffecec;
 }
 
+/* Estilo de borde verde para input válido */
 .valid-input {
     border-color: #2ecc71;
 }
 
-/* Mensaje de error */
+/* Íconos ✔ y ❌ para validación */
+.check-icon {
+    color: green;
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.error-icon {
+    color: red;
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ==========================================================================
+   6. MENSAJES DE ERROR Y CRITERIOS
+   ========================================================================== */
+
+/* Mensaje debajo del input cuando hay errores de validación */
 .error-message {
     color: var(--color-coral-red);
     font-size: 0.85rem;
     margin-top: 0.3rem;
     font-weight: 500;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
 }
 
-/* Criterio de contraseña */
+/* Mensaje debajo del input para criterios de contraseña (si usás alguno) */
 .password-criteria {
     font-size: 0.8rem;
     color: var(--color-dark-gray);
@@ -88,16 +149,11 @@
     color: var(--color-coral-red);
 }
 
-/* Selector de perfil */
-select.form-input {
-    appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%232ec4b6" height="24" viewBox="0 0 24 24" width="24"><path d="M7 10l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 0.7rem center;
-    background-size: 1.2rem;
-}
+/* ==========================================================================
+   7. BOTÓN DE ENVÍO
+   ========================================================================== */
 
-/* Botón de registro */
+/* Estilo base del botón */
 .register-button {
     width: 100%;
     padding: 0.8rem;
@@ -108,27 +164,18 @@ select.form-input {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
+/* Hover del botón */
 .register-button:hover {
     background-color: var(--color-secondary);
+    transform: scale(1.02);
 }
 
+/* Botón deshabilitado */
 .register-button:disabled {
     background-color: var(--color-secondary);
     cursor: not-allowed;
 }
 
-
-.check-icon {
-    color: green;
-}
-
-.error-icon {
-    color: red;
-}
-
-.input-wrapper{
-    width: 100%;
-}
