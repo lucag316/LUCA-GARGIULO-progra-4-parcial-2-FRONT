@@ -119,3 +119,16 @@ select.form-input {
     background-color: var(--color-secondary);
     cursor: not-allowed;
 }
+
+
+.check-icon {
+    color: green;
+}
+
+.error-icon {
+    color: red;
+}
+
+.input-wrapper{
+    width: 100%;
+}

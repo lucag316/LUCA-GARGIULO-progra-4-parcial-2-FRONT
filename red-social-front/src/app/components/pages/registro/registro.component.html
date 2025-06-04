@@ -1,10 +1,15 @@
+
+<!-- Contenedor Principal del Registro -->
 <div class="register-container">
+
+    <!-- Contenedor Principal del Registro -->
     <div class="register-card">
         <h2 class="register-title">Registrarse</h2>
 
+        <!-- Formulario con Template-driven Forms -->
         <form #registerForm="ngForm" (ngSubmit)="onRegister()" novalidate>
 
-            <!-- Nombre -->
+            <!-- CAMPO: NOMBRE DEL USUARIO -->
             <div class="form-group">
                 <label for="nombre">Nombre</label>
                 <div class="input-wrapper">
@@ -15,21 +20,30 @@
                         name="nombre" 
                         class="form-input"
                         required 
-                        minlength="2" 
+                        minlength="2"
+                        pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
                         [(ngModel)]="user.nombre" 
                         #nombreModel="ngModel" 
                         placeholder="Nombre"
-                        [ngClass]="{'invalid-input': nombreModel.invalid && nombreModel.touched}">
-                        <span *ngIf="nombreModel.valid && nombreModel.touched" class="check-icon">✔</span>
-                        <span *ngIf="nombreModel.invalid && nombreModel.touched" class="error-icon">❌</span>
+                        [ngClass]="{'invalid-input': nombreModel.invalid && nombreModel.touched,
+                                    'valid-input': nombreModel.valid && nombreModel.touched
+                        }"
+                    />
+
+                    <!-- Íconos de validación -->
+                    <span *ngIf="nombreModel.valid && nombreModel.touched" class="check-icon">✔</span>
+                    <span *ngIf="nombreModel.invalid && nombreModel.touched" class="error-icon">❌</span>
                 </div>
+
+                <!-- Mensajes de error específicos -->
                 <div class="error-message" *ngIf="nombreModel.touched && nombreModel.invalid">
                     <span *ngIf="nombreModel.errors?.['required']">Este campo es obligatorio.</span>
-                    <span *ngIf="nombreModel.errors?.['minlength']">Debe tener al menos 2 caracteres.</span>
+                    <span *ngIf="nombreModel.errors?.['minlength']">Debe tener al menos 2 caracteres. </span>
+                    <span *ngIf="nombreModel.errors?.['pattern']">Solo se permiten letras.</span>
                 </div>
             </div>
 
-            <!-- Apellido -->
+            <!-- CAMPO: APELLIDO DEL USUARIO -->
             <div class="form-group">
                 <label for="apellido">Apellido</label>
                 <div class="input-wrapper">
@@ -38,26 +52,43 @@
                         name="apellido" 
                         class="form-input"
                         required 
-                        minlength="2" 
+                        minlength="2"
+                        pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
                         [(ngModel)]="user.apellido" 
                         #apellidoModel="ngModel" 
                         placeholder="Apellido"
-                        [ngClass]="{'invalid-input': apellidoModel.invalid && apellidoModel.touched}">
+                        [ngClass]="{'invalid-input': apellidoModel.invalid && apellidoModel.touched,
+                                    'valid-input': apellidoModel.valid && apellidoModel.touched
+                        }">
                         <span *ngIf="apellidoModel.valid && apellidoModel.touched" class="check-icon">✔</span>
                         <span *ngIf="apellidoModel.invalid && apellidoModel.touched" class="error-icon">❌</span>
                 </div>
                 <div class="error-message" *ngIf="apellidoModel.touched && apellidoModel.invalid">
                     <span *ngIf="apellidoModel.errors?.['required']">Este campo es obligatorio.</span>
-                    <span *ngIf="apellidoModel.errors?.['minlength']">Debe tener al menos 2 caracteres.</span>
+                    <span *ngIf="apellidoModel.errors?.['minlength']">Debe tener al menos 2 caracteres. </span>
+                    <span *ngIf="apellidoModel.errors?.['pattern']">Solo se permiten letras.</span>
                 </div>
             </div>
 
             <!-- Correo -->
             <div class="form-group">
                 <label for="correo">Correo electrónico</label>
-                <input type="email" id="correo" name="correo" class="form-input"
-                    required email [(ngModel)]="user.correo" #correoModel="ngModel" placeholder="Correo"
-                    [ngClass]="{'invalid-input': correoModel.invalid && correoModel.touched}">
+                <div class="input-wrapper">
+                    <input 
+                        type="email" 
+                        id="correo" 
+                        name="correo" 
+                        class="form-input"
+                        required email 
+                        [(ngModel)]="user.correo" 
+                        #correoModel="ngModel" 
+                        placeholder="Correo"
+                        [ngClass]="{'invalid-input': correoModel.invalid && correoModel.touched,
+                            'valid-input': correoModel.valid && correoModel.touched
+                        }">
+                    <span *ngIf="correoModel.valid && correoModel.touched" class="check-icon">✔</span>
+                    <span *ngIf="correoModel.invalid && correoModel.touched" class="error-icon">❌</span>
+                </div>
                 <div class="error-message" *ngIf="correoModel.touched && correoModel.invalid">
                     <span *ngIf="correoModel.errors?.['required']">Este campo es obligatorio.</span>
                     <span *ngIf="correoModel.errors?.['email']">Debe ser un correo válido.</span>
@@ -67,9 +98,23 @@
             <!-- Usuario -->
             <div class="form-group">
                 <label for="usuario">Nombre de usuario</label>
-                <input type="text" id="usuario" name="usuario" class="form-input"
-                    required minlength="3" [(ngModel)]="user.usuario" #usuarioModel="ngModel" placeholder="Usuario"
-                    [ngClass]="{'invalid-input': usuarioModel.invalid && usuarioModel.touched}">
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        id="usuario" 
+                        name="usuario" 
+                        class="form-input"
+                        required 
+                        minlength="3" 
+                        [(ngModel)]="user.usuario" 
+                        #usuarioModel="ngModel" 
+                        placeholder="Usuario"
+                        [ngClass]="{'invalid-input': usuarioModel.invalid && usuarioModel.touched, 
+                            'valid-input': usuarioModel.valid && usuarioModel.touched
+                        }">
+                    <span *ngIf="usuarioModel.valid && usuarioModel.touched" class="check-icon">✔</span>
+                    <span *ngIf="usuarioModel.invalid && usuarioModel.touched" class="error-icon">❌</span>
+                </div>
                 <div class="error-message" *ngIf="usuarioModel.touched && usuarioModel.invalid">
                     <span *ngIf="usuarioModel.errors?.['required']">Este campo es obligatorio.</span>
                     <span *ngIf="usuarioModel.errors?.['minlength']">Debe tener al menos 3 caracteres.</span>
@@ -91,7 +136,9 @@
                         [(ngModel)]="user.password"
                         #passwordModel="ngModel" 
                         placeholder="Contraseña"
-                        [ngClass]="{'invalid-input': passwordModel.invalid && passwordModel.touched}">
+                        [ngClass]="{'invalid-input': passwordModel.invalid && passwordModel.touched,
+                            'valid-input': passwordModel.valid && passwordModel.touched
+                        }">
                         <span *ngIf="passwordModel.valid && passwordModel.touched" class="check-icon">✔</span>
                         <span *ngIf="passwordModel.invalid && passwordModel.touched" class="error-icon">❌</span>
                 </div>
@@ -105,10 +152,23 @@
             <!-- Repetir Contraseña -->
             <div class="form-group">
                 <label for="confirmPassword">Repetir contraseña</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" class="form-input"
-                    required [(ngModel)]="confirmPassword" #confirmPasswordModel="ngModel" placeholder="Repetir contraseña"
-                    [ngClass]="{'invalid-input': confirmPasswordModel.invalid && confirmPasswordModel.touched || (user.password !== confirmPassword && confirmPasswordModel.touched)}">
-                <div class="error-message" *ngIf="confirmPasswordModel.touched && user.password !== confirmPassword">
+                <div class="input-wrapper">
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        class="form-input"
+                        required 
+                        [(ngModel)]="confirmPassword" 
+                        #confirmPasswordModel="ngModel" 
+                        placeholder="Repetir contraseña"
+                        [ngClass]="{'invalid-input': confirmPasswordModel.touched && (confirmPasswordModel.invalid || user.password !== confirmPassword),
+                            'valid-input': confirmPasswordModel.valid && user.password === confirmPassword && confirmPasswordModel.touched
+                        }">
+                    <span *ngIf="confirmPasswordModel.valid && confirmPasswordModel.touched && passwordsCoinciden()" class="check-icon">✔</span>
+                    <span *ngIf="(!confirmPasswordModel.valid || !passwordsCoinciden()) && confirmPasswordModel.touched" class="error-icon">❌</span>
+                </div>
+                <div class="error-message" *ngIf="confirmPasswordModel.touched && !passwordsCoinciden()">
                     Las contraseñas no coinciden.
                 </div>
             </div>
@@ -116,23 +176,49 @@
             <!-- Fecha de nacimiento -->
             <div class="form-group">
                 <label for="fechaNacimiento">Fecha de nacimiento</label>
-                <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-input"
-                    required [(ngModel)]="user.fechaNacimiento" #fechaNacimientoModel="ngModel" placeholder="Fecha de nacimiento"
-                    [ngClass]="{'invalid-input': fechaNacimientoModel.invalid && fechaNacimientoModel.touched}">
+                <div class="input-wrapper"> 
+                    <input 
+                        type="date" 
+                        id="fechaNacimiento" 
+                        name="fechaNacimiento" 
+                        class="form-input"
+                        required 
+                        [(ngModel)]="user.fechaNacimiento" 
+                        #fechaNacimientoModel="ngModel" 
+                        placeholder="Fecha de nacimiento"
+                        [ngClass]="{'invalid-input': (fechaNacimientoModel.touched && (fechaNacimientoModel.invalid || !esFechaValida())),
+                                    'valid-input': (fechaNacimientoModel.valid && esFechaValida() && fechaNacimientoModel.touched)
+                        }">
+                    <span *ngIf="fechaNacimientoModel.valid && fechaNacimientoModel.touched && esFechaValida()" class="check-icon">✔</span>
+                    <span *ngIf="fechaNacimientoModel.touched && (!fechaNacimientoModel.valid || !esFechaValida())" class="error-icon">❌</span>
+                </div>
                 <div class="error-message" *ngIf="fechaNacimientoModel.touched && fechaNacimientoModel.invalid">
                     Este campo es obligatorio.
                 </div>
             </div>
             <div class="error-message" *ngIf="fechaNacimientoModel.touched && !esFechaValida()">
-                Debe tener al menos 13 años.
+                Debe tener al menos 13 años cumplidos.
             </div>
 
             <!-- Descripción -->
             <div class="form-group">
                 <label for="descripcion">Descripción breve</label>
-                <textarea id="descripcion" name="descripcion" class="form-input"
-                        required minlength="10" rows="3" [(ngModel)]="user.descripcion" #descripcionModel="ngModel" placeholder="Descripción"
-                        [ngClass]="{'invalid-input': descripcionModel.invalid && descripcionModel.touched}"></textarea>
+                <div class="input-wrapper">
+                    <textarea 
+                        id="descripcion" 
+                        name="descripcion" 
+                        class="form-input"
+                        required 
+                        minlength="10" 
+                        rows="3" 
+                        [(ngModel)]="user.descripcion" #descripcionModel="ngModel" placeholder="Descripción"
+                        [ngClass]="{'invalid-input': descripcionModel.invalid && descripcionModel.touched,
+                            'valid-input': descripcionModel.valid && descripcionModel.touched
+                        }">
+                    </textarea>
+                    <span *ngIf="descripcionModel.valid && descripcionModel.touched" class="check-icon">✔</span>
+                    <span *ngIf="descripcionModel.invalid && descripcionModel.touched" class="error-icon">❌</span>
+                </div>
                 <div class="error-message" *ngIf="descripcionModel.touched && descripcionModel.invalid">
                     <span *ngIf="descripcionModel.errors?.['required']">Este campo es obligatorio.</span>
                     <span *ngIf="descripcionModel.errors?.['minlength']">Debe tener al menos 10 caracteres.</span>

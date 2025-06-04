@@ -84,15 +84,24 @@ export class RegistroComponent {
 
     esFechaValida(): boolean {
         if (!this.user.fechaNacimiento) return false;
-        const edad = this.calcularEdad(new Date(this.user.fechaNacimiento));
-        return edad >= 13;
+
+        const fechaNacimiento = new Date(this.user.fechaNacimiento);
+        const hoy = new Date();
+
+        const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        const mes = hoy.getMonth() - fechaNacimiento.getMonth();
+        const dia = hoy.getDate() - fechaNacimiento.getDate();
+
+        if (edad > 13) return true;
+        if (edad === 13) {
+            if (mes > 0) return true;
+            if (mes === 0 && dia >= 0) return true;
+        }
+
+        return false;
     }
 
-    calcularEdad(fecha: Date): number {
-        const hoy = new Date();
-        let edad = hoy.getFullYear() - fecha.getFullYear();
-        const m = hoy.getMonth() - fecha.getMonth();
-        if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
-        return edad;
+    passwordsCoinciden(): boolean {
+        return this.user.password === this.confirmPassword;
     }
 }
