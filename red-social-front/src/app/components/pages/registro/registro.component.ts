@@ -36,7 +36,8 @@ export class RegistroComponent {
         password: '',
         fechaNacimiento: '',
         descripcion: '',
-        perfil: 'usuario'
+        perfil: 'usuario',
+        imagenPerfil: null as File | null,
     };
 
     confirmPassword: string = '';
@@ -55,8 +56,11 @@ export class RegistroComponent {
     } 
 
 
-    onFileSelected(event: any): void {
-        this.selectedFile = event.target.files[0];
+    onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (input?.files && input.files.length > 0) {
+            this.user.imagenPerfil = input.files[0];
+        }
     }
 
 
@@ -76,5 +80,19 @@ export class RegistroComponent {
             }
             this.loading = false;
         }, 1500);
+    }
+
+    esFechaValida(): boolean {
+        if (!this.user.fechaNacimiento) return false;
+        const edad = this.calcularEdad(new Date(this.user.fechaNacimiento));
+        return edad >= 13;
+    }
+
+    calcularEdad(fecha: Date): number {
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - fecha.getFullYear();
+        const m = hoy.getMonth() - fecha.getMonth();
+        if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
+        return edad;
     }
 }
