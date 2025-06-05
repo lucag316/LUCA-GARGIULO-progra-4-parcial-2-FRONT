@@ -9,7 +9,7 @@ Este es el frontend del proyecto **Red Social**, desarrollado en Angular como pa
 ## 📋 Indice
 - [👨‍💻 Información del Proyecto](#-información-del-proyecto)
 - [🔗 Links importantes](#-links-importantes)
-- [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)
+- [🛠️ Tecnologías utilizadas](#-tecnologías-utilizadas)
 - [🎯 Objetivo General](#-objetivo-general)
 - [🔧 Instalación](#-instalación)
 - [🟢 Sprint 1](#-sprint-1)
@@ -36,6 +36,8 @@ Este es el frontend del proyecto **Red Social**, desarrollado en Angular como pa
 -🔗 **Repositorio GitHub**: *[https://github.com/lucag316/LUCA-GARGIULO-progra-4-parcial-2-FRONT]*
 
 -🔗 **Deploy en Vercel**: *[https://parcial-2-front.vercel.app]*
+
+-📄 **Descargar PDF del Parcial**: *[Descargar](./docs/progra-4-parcial-2.pdf)*
 
 ---
 
