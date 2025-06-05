@@ -90,9 +90,9 @@ ng serve
 
 ## 🧑‍💼 Funcionalidades por Sprint
 
-### 🟢 Sprint 1 (09/06)
+### 🟢 Sprint 1
 
-#### Consigna: 
+#### Consigna (Entrega: 09/06): 
 - Creación del proyecto front - Angular.
 - Pantallas (Registro, Login, Publicaciones, Mi Perfil)
 - Deploy en hosting
@@ -135,15 +135,21 @@ Este Sprint sienta las bases fundamentales para el funcionamiento del frontend, 
 
 ---
 
-### 🟢 Sprint 2 (16/06)
+### 🟢 Sprint 2
+
+#### Consigna (Entrega: 16/06): 
 
 ---
 
-### 🟢 Sprint 3 (23/06)
+### 🟢 Sprint 3
+
+#### Consigna (Entrega: 23/06): 
 
 ---
 
-### 🟢 Sprint 4 (30/06)
+### 🟢 Sprint 4
+
+#### Consigna (Entrega: 30/06): 
 
 ---
 
