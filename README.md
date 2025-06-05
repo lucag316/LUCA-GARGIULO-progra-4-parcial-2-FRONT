@@ -37,7 +37,7 @@ Este es el frontend del proyecto **Red Social**, desarrollado en Angular como pa
 
 -🔗 **Deploy en Vercel**: *[https://parcial-2-front.vercel.app]*
 
--📄 **Descargar PDF del Parcial**: *[Descargar](./docs/progra-4-parcial-2.pdf)*
+-📄 **Descargar PDF del Parcial**: *[Descargar](./red-social-front/src/assets/docs/progra-4-parcial-2.pdf)*
 
 ---
 
