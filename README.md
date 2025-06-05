@@ -9,12 +9,13 @@ Este es el frontend del proyecto **Red Social**, desarrollado en Angular como pa
 ## 📋 Indice
 - [👨‍💻 Información del Proyecto](#-información-del-proyecto)
 - [🔗 Links importantes](#-links-importantes)
+- [🛠️ Tecnologías Utilizadas](#-tecnologías-utilizadas)
 - [🎯 Objetivo General](#-objetivo-general)
 - [🔧 Instalación](#-instalación)
-- [🟢 Sprint 1 (09/06)](#-sprint-1-(09/06))
-- [🟢 Sprint 2 (16/06)](#-sprint-2-(16/06))
-- [🟢 Sprint 3 (23/06)](#-sprint-3-(23/06))
-- [🟢 Sprint 4 (30/06)](#-sprint-4-(30/06))
+- [🟢 Sprint 1](#-sprint-1)
+- [🟢 Sprint 2](#-sprint-2)
+- [🟢 Sprint 3](#-sprint-3)
+- [🟢 Sprint 4](#-sprint-4)
 
 ---
 
