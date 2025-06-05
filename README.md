@@ -9,6 +9,12 @@ Este es el frontend del proyecto **Red Social**, desarrollado en Angular como pa
 ## 📋 Indice
 - [👨‍💻 Información del Proyecto](#-información-del-proyecto)
 - [🔗 Links importantes](#-links-importantes)
+- [🎯 Objetivo General](#-objetivo-general)
+- [🔧 Instalación](#-instalación)
+- [🟢 Sprint 1 (09/06)](#-sprint-1-(09/06))
+- [🟢 Sprint 2 (16/06)](#-sprint-2-(16/06))
+- [🟢 Sprint 3 (23/06)](#-sprint-3-(23/06))
+- [🟢 Sprint 4 (30/06)](#-sprint-4-(30/06))
 
 ---
 
@@ -26,9 +32,9 @@ Este es el frontend del proyecto **Red Social**, desarrollado en Angular como pa
 
 ## 🔗 Links importantes
 
--🔗 **Repositorio GitHub**: *[https://github.com/lucag316/LucaFrancoGargiuloNicola-TP1-PROG4-2025-C1.git]*
+-🔗 **Repositorio GitHub**: *[https://github.com/lucag316/LUCA-GARGIULO-progra-4-parcial-2-FRONT]*
 
--🔗 **Deploy en Vercel**: *[https://probando2.vercel.app/home]*
+-🔗 **Deploy en Vercel**: *[https://parcial-2-front.vercel.app]*
 
 ---
 
@@ -73,6 +79,8 @@ Desarrollar una aplicación web moderna, responsiva e interactiva utilizando Ang
 ## 🔧 Instalación
 
 ```bash
+npm install -g @angular/cli
+ng new red-social-front
 npm install
 ng serve
 ```
@@ -108,28 +116,34 @@ Durante el Sprint 1 del proyecto frontend con Angular se implementaron y cumplie
 - Pantallas desarrolladas:
 
     - Login: Formulario con validaciones completas para ingreso por correo o nombre de usuario y contraseña. Se garantiza que el identificador sea único (pendiente validación backend).
-
-    - Registro: Formulario con los campos solicitados — nombre, apellido, correo, usuario, contraseña, repetir contraseña, fecha de nacimiento, descripción breve, campo para subir imagen de perfil y tipo de perfil.
+    - Registro: Formulario con los campos solicitados —> nombre, apellido, correo, usuario, contraseña, repetir contraseña, fecha de nacimiento, descripción breve, campo para subir imagen de perfil y tipo de perfil.
 
 - Validaciones y mensajes:
 
     - Contraseña con al menos 8 caracteres, una mayúscula y un número, validada tanto en template como programáticamente.
-
     - Mensajes de error claros y amigables para cada campo obligatorio y condición de validación.
-
     - Confirmación de contraseña y restricción de edad mínima (13 años) en el registro.
-
     - Indicadores visuales (clases CSS) que muestran estado válido o inválido al tocar los campos.
-
     - Navegación entre componentes configurada sin restricciones de accesibilidad para facilitar pruebas y navegación simple entre Login, Registro, Publicaciones y Mi Perfil (hecho en un navbar y footer).
-
     - Carga y manejo de imagen de perfil en el formulario de registro mediante campo file, preparado para integrar con backend.
-
     - Implementación del favicon propio incluido en el proyecto.
-
     - Despliegue básico preparado, con instrucciones para ejecutar localmente y desplegado en el hosting (**vercel**).
-
     - Uso de Angular Material SnackBar para notificaciones rápidas y feedback al usuario.
 
 Este Sprint sienta las bases fundamentales para el funcionamiento del frontend, con una estructura limpia y funcional, validaciones robustas y UX amigable, listo para integrarse con el backend en próximos sprints.
 
+---
+
+### 🟢 Sprint 2 (16/06)
+
+---
+
+### 🟢 Sprint 3 (23/06)
+
+---
+
+### 🟢 Sprint 4 (30/06)
+
+---
+
+- [Volver al indice](#-indice)
