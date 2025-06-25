@@ -1,0 +1,11 @@
+<div class="publicacion-card">
+    <h3>{{ publicacion.titulo }}</h3>
+    <p>{{ publicacion.descripcion }}</p>
+    <img *ngIf="publicacion.imagenUrl" [src]="publicacion.imagenUrl" alt="Imagen publicación" class="imagen-publicacion">
+    <p><small>Autor: {{ publicacion.autorNombre }}</small></p>
+    <p>Likes: {{ publicacion.likes.length }}</p>
+
+    <button (click)="toggleLike()" [disabled]="procesandoLike">
+        {{ yaDioLike ? 'Quitar Me gusta' : 'Dar Me gusta' }}
+    </button>
+</div>

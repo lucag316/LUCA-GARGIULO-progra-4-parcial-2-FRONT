@@ -1,1 +1,29 @@
-<p>publicaciones works!</p>
+<div class="publicaciones-container">
+
+    <h2>Publicaciones</h2>
+
+    <!-- Selector de orden -->
+    <label for="orden">Ordenar por:</label>
+    <select id="orden" #ordenSelect (change)="cambiarOrden(ordenSelect.value)" [value]="orden">
+        <option value="fecha">Fecha</option>
+        <option value="likes">Cantidad de Me Gusta</option>
+    </select>
+
+    <!-- Mensajes -->
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <div *ngIf="cargando && publicaciones.length === 0" class="cargando">Cargando publicaciones...</div>
+    <div *ngIf="!cargando && publicaciones.length === 0" class="vacio">No hay publicaciones para mostrar.</div>
+
+    <!-- Listado de publicaciones -->
+    <app-publicacion 
+        *ngFor="let p of publicaciones" 
+        [publicacion]="p" 
+        (likeCambio)="recargar()">
+    </app-publicacion>
+
+    <!-- Botón cargar más -->
+    <button (click)="cargarPublicaciones()" [disabled]="cargando || !hayMas" *ngIf="publicaciones.length > 0">
+        {{ cargando ? 'Cargando...' : (hayMas ? 'Cargar más' : 'No hay más publicaciones') }}
+    </button>
+
+</div>
