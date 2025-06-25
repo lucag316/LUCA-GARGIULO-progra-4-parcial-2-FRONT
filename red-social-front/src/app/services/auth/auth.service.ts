@@ -28,7 +28,7 @@ export class AuthService {
   register(datos: FormData): Observable<any> {
     return this.http.post(`${this.baseUrl}/registro`, datos).pipe(
       tap((res: any) => {
-        localStorage.setItem('token', res.token);
+        localStorage.setItem('token', res.data.token); 
       })
     );
   }
