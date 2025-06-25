@@ -1,9 +1,14 @@
 <div class="navbar-container">
     <nav class="navbar">
         <a class="navbar-link" routerLink="/login" routerLinkActive="active-link">Login</a> |
-        <a class="navbar-link" routerLink="/registro" routerLinkActive="active-link">Registro</a> |
-        <a class="navbar-link" routerLink="/publicaciones" routerLinkActive="active-link">Publicaciones</a> |
-        <a class="navbar-link" routerLink="/mi-perfil" routerLinkActive="active-link">Mi Perfil</a>
-        
+        <a class="navbar-link" routerLink="/registro" routerLinkActive="active-link" >Registro</a> |
+        <a class="navbar-link" routerLink="/publicaciones" routerLinkActive="active-link" *ngIf="authService.estaLogueado()">
+            Publicaciones
+        </a> |
+        <a class="navbar-link" routerLink="/mi-perfil" routerLinkActive="active-link" *ngIf="authService.estaLogueado()">
+        Mi Perfil
+        </a>
+
+        <button *ngIf="authService.estaLogueado()" (click)="logout()">Logout</button>
     </nav>
 </div>
