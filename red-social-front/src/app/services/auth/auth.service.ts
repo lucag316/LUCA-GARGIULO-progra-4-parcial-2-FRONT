@@ -18,6 +18,7 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, datos).pipe(
       tap((res: any) => {
         localStorage.setItem('token', res.data.token); // ojo que el token está dentro de res.data.token según tu backend
+        console.log('Token guardado:', res.data.token); // Debug
       })
     );
   }
