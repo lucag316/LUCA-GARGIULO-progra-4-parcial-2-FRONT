@@ -38,8 +38,7 @@ export class LoginComponent {
 
 
 
-    async onLogin() {
-
+    onLogin() {
         this.identifier = this.identifier.trim();
         this.password = this.password.trim();
 
@@ -48,7 +47,6 @@ export class LoginComponent {
             return;
         }
 
-        // Valida patrón de contraseña manualmente (en caso que Angular no lo hiciera bien)
         const passwordPattern = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
         if (!passwordPattern.test(this.password)) {
             this.showMessage('La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.', true);
@@ -57,28 +55,18 @@ export class LoginComponent {
 
         this.loading = true;
 
-        /*try {
-            const { error, user } = await this.authService.login(this.identifier, this.password);
-            
-            if (error) {
-                // Aquí puedes chequear errores más específicos según el backend
-                if (error.message.includes('Unauthorized')) {
-                    this.showMessage('Usuario o contraseña incorrectos.', true);
-                } else {
-                    this.showMessage('Error al iniciar sesión: ' + error.message, true);
-                }
+        this.authService.login({ usuario: this.identifier, contraseña: this.password }).subscribe({
+            next: (res) => {
+                this.showMessage('¡Inicio de sesión exitoso!');
                 this.loading = false;
-                return;
+                this.router.navigate(['/publicaciones']);  // o la ruta que quieras después del login
+            },
+            error: (err) => {
+                const msg = err.error?.message || 'Error al iniciar sesión';
+                this.showMessage(msg, true);
+                this.loading = false;
             }
-
-            this.showMessage('¡Inicio de sesión exitoso!');
-            this.router.navigate(['/home']);
-
-        } catch (err: any) {
-            this.showMessage('Error inesperado: ' + err.message, true);
-        } finally {
-            this.loading = false;
-        }*/
+        });
     }
 
     onPasswordBlur() {

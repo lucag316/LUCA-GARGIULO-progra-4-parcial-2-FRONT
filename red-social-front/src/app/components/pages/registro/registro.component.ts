@@ -53,20 +53,44 @@ export class RegistroComponent {
 
     onRegister(): void {
         if (this.user.password !== this.confirmPassword) {
-            alert('Las contraseñas no coinciden');
+            this.showMessage('Las contraseñas no coinciden', true);
+            return;
+        }
+
+        if (!this.esFechaValida()) {
+            this.showMessage('Debes tener al menos 13 años para registrarte', true);
             return;
         }
 
         this.loading = true;
 
-        // Simulación o llamado real a servicio de registro:
-        setTimeout(() => {
-            console.log('Usuario registrado:', this.user);
-            if (this.selectedFile) {
-                console.log('Imagen seleccionada:', this.selectedFile.name);
+        // Preparo FormData para enviar archivo junto a los datos
+        const formData = new FormData();
+        formData.append('nombre', this.user.nombre);
+        formData.append('apellido', this.user.apellido);
+        formData.append('correo', this.user.correo);
+        formData.append('usuario', this.user.usuario);
+        formData.append('contraseña', this.user.password);
+        formData.append('fechaNacimiento', this.user.fechaNacimiento);
+        formData.append('descripcion', this.user.descripcion);
+        formData.append('perfil', this.user.perfil);
+
+        if (this.user.imagenPerfil) {
+            formData.append('imagenPerfil', this.user.imagenPerfil, this.user.imagenPerfil.name);
+        }
+
+        this.authService.register(formData).subscribe({
+            next: (res) => {
+                this.showMessage('Registro exitoso');
+                this.loading = false;
+                this.router.navigate(['/login']); // o a donde quieras redirigir
+            },
+            error: (err) => {
+                const msg = err.error?.message || 'Error en el registro';
+                this.showMessage(msg, true);
+                this.loading = false;
             }
-            this.loading = false;
-        }, 1500);
+        });
     }
 
     esFechaValida(): boolean {
@@ -90,5 +114,14 @@ export class RegistroComponent {
 
     passwordsCoinciden(): boolean {
         return this.user.password === this.confirmPassword;
+    }
+
+    showMessage(message: string, isError: boolean = false) {
+        this.snackBar.open(message, 'Cerrar', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: isError ? 'snackbar-error' : 'snackbar-success'
+        });
     }
 }
