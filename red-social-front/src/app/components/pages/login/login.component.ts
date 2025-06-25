@@ -55,7 +55,10 @@ export class LoginComponent {
 
         this.loading = true;
 
-        this.authService.login({ usuario: this.identifier, contraseña: this.password }).subscribe({
+        this.authService.login({ 
+            correoOrUsername: this.identifier, 
+            password: this.password 
+        }).subscribe({
             next: (res) => {
                 this.showMessage('¡Inicio de sesión exitoso!');
                 this.loading = false;

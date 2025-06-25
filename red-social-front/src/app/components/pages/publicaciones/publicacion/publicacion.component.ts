@@ -18,61 +18,61 @@ export class PublicacionComponent {
     @Input() publicacion!: Publicacion;
     @Output() likeCambio = new EventEmitter<void>();
 
-    usuarioId: string | null = null;
+    usuarioId!: string;
     yaDioLike = false;
     procesandoLike = false;
 
     constructor(
         private authService: AuthService,
         private publicacionesService: PublicacionesService
-    ) {
-        this.usuarioId = this.authService.getUsuarioId();
+    ) {}
+
+    ngOnInit(): void {
+        const id = this.authService.getUsuarioId();
+        if (!id) return; // Por seguridad
+        this.usuarioId = id;
+        this.verificarLike();
     }
 
     ngOnChanges(): void {
         this.verificarLike();
     }
 
-    verificarLike() {
-        if (!this.usuarioId) return;
+    verificarLike(): void {
+        if (!this.usuarioId || !this.publicacion) return;
         this.yaDioLike = this.publicacion.likes.includes(this.usuarioId);
     }
 
-    toggleLike() {
-        if (this.procesandoLike) return;
+    toggleLike(): void {
+        if (this.procesandoLike || !this.usuarioId) return;
 
         this.procesandoLike = true;
 
         if (this.yaDioLike) {
-        // Quitar like
-        this.publicacionesService.quitarLike(this.publicacion._id)
-            .subscribe({
-            next: () => {
-                this.yaDioLike = false;
-                // Actualizamos el array localmente para no recargar todo
-                this.publicacion.likes = this.publicacion.likes.filter(id => id !== this.usuarioId);
-                this.likeCambio.emit();
-                this.procesandoLike = false;
-            },
-            error: () => {
-                alert('Error al quitar like'); // Mejor usar modal en producción
-                this.procesandoLike = false;
-            }
+            this.publicacionesService.quitarLike(this.publicacion._id).subscribe({
+                next: () => {
+                    this.yaDioLike = false;
+                    this.publicacion.likes = this.publicacion.likes.filter(id => id !== this.usuarioId);
+                    this.likeCambio.emit();
+                    this.procesandoLike = false;
+                },
+                error: () => {
+                    alert('Error al quitar like');
+                    this.procesandoLike = false;
+                }
             });
         } else {
-        // Dar like
-        this.publicacionesService.darLike(this.publicacion._id)
-            .subscribe({
-            next: () => {
-                this.yaDioLike = true;
-                this.publicacion.likes.push(this.usuarioId!);
-                this.likeCambio.emit();
-                this.procesandoLike = false;
-            },
-            error: () => {
-                alert('Error al dar like');
-                this.procesandoLike = false;
-            }
+            this.publicacionesService.darLike(this.publicacion._id).subscribe({
+                next: () => {
+                    this.yaDioLike = true;
+                    this.publicacion.likes.push(this.usuarioId);
+                    this.likeCambio.emit();
+                    this.procesandoLike = false;
+                },
+                error: () => {
+                    alert('Error al dar like');
+                    this.procesandoLike = false;
+                }
             });
         }
     }

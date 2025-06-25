@@ -1,11 +1,34 @@
-<div class="publicacion-card">
-    <h3>{{ publicacion.titulo }}</h3>
-    <p>{{ publicacion.descripcion }}</p>
-    <img *ngIf="publicacion.imagenUrl" [src]="publicacion.imagenUrl" alt="Imagen publicación" class="imagen-publicacion">
-    <p><small>Autor: {{ publicacion.autorNombre }}</small></p>
-    <p>Likes: {{ publicacion.likes.length }}</p>
+<div class="publicacion-card" [class.procesando]="procesandoLike">
+    <h3 class="titulo">{{ publicacion.titulo }}</h3>
+    
+    <p class="descripcion">{{ publicacion.descripcion }}</p>
+    
+    <!-- Imagen opcional -->
+    <div *ngIf="publicacion.imagenUrl" class="imagen-container">
+        <img [src]="publicacion.imagenUrl" alt="Imagen de publicación" />
+    </div>
 
-    <button (click)="toggleLike()" [disabled]="procesandoLike">
-        {{ yaDioLike ? 'Quitar Me gusta' : 'Dar Me gusta' }}
-    </button>
+    <!-- Autor y fecha -->
+    <div class="info-publicacion">
+        <span class="autor">
+        <img *ngIf="publicacion.autor.imagenPerfil" 
+            [src]="publicacion.autor.imagenPerfil" 
+            alt="Foto perfil" 
+            class="foto-perfil" />
+        {{ publicacion.autor.username }}
+        </span>
+        <span class="fecha">{{ publicacion.fechaCreacion | date:'medium' }}</span>
+    </div>
+
+    <!-- Likes -->
+    <div class="likes-container">
+        <button (click)="toggleLike()" 
+                [disabled]="procesandoLike"
+                [class.liked]="yaDioLike"
+                aria-label="Me gusta">
+        <span *ngIf="yaDioLike">💖</span>
+        <span *ngIf="!yaDioLike">🤍</span>
+        {{ publicacion.likes.length }}
+        </button>
+    </div>
 </div>

@@ -21,6 +21,8 @@ export class AppComponent {
   title = 'red-social-front';
 
   constructor(private authService: AuthService, private router: Router) {
+    (window as any).authService = authService; // expongo el servicio en la consola(puedo probar desde ahi)
+
     if (!this.authService.estaLogueado()) {
       this.router.navigate(['/login']);
     } else {

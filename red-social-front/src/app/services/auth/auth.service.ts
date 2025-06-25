@@ -14,10 +14,10 @@ export class AuthService {
   // ------------------------
   // 1. LOGIN: guarda token
   // ------------------------
-  login(datos: { usuario: string, contraseña: string }): Observable<any> {
+  login(datos: { correoOrUsername: string; password: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/login`, datos).pipe(
       tap((res: any) => {
-        localStorage.setItem('token', res.token);
+        localStorage.setItem('token', res.data.token); // ojo que el token está dentro de res.data.token según tu backend
       })
     );
   }

@@ -23,7 +23,7 @@ export class RegistroComponent {
         password: '',
         fechaNacimiento: '',
         descripcion: '',
-        perfil: 'usuario',
+        //perfil: 'usuario',
         imagenPerfil: null as File | null,
     };
 
@@ -68,12 +68,12 @@ export class RegistroComponent {
         const formData = new FormData();
         formData.append('nombre', this.user.nombre);
         formData.append('apellido', this.user.apellido);
-        formData.append('correo', this.user.correo);
-        formData.append('usuario', this.user.usuario);
-        formData.append('contraseña', this.user.password);
+        formData.append('email', this.user.correo);
+        formData.append('username', this.user.usuario);
+        formData.append('password', this.user.password);
         formData.append('fechaNacimiento', this.user.fechaNacimiento);
         formData.append('descripcion', this.user.descripcion);
-        formData.append('perfil', this.user.perfil);
+        //formData.append('perfil', this.user.perfil);
 
         if (this.user.imagenPerfil) {
             formData.append('imagenPerfil', this.user.imagenPerfil, this.user.imagenPerfil.name);

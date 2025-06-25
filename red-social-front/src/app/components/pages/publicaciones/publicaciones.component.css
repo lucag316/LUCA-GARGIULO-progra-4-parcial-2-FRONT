@@ -1,0 +1,91 @@
+.publicaciones-container {
+  max-width: 720px;
+  margin: 1.5rem auto;
+  padding: 1rem 1.5rem;
+  background-color: var(--color-white);
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  font-family: 'Roboto', sans-serif;
+  color: var(--color-dark-blue);
+}
+
+.publicaciones-container h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: center;
+}
+
+.publicaciones-container label {
+  font-weight: 600;
+  margin-right: 0.6rem;
+  color: var(--color-dark-gray);
+}
+
+.publicaciones-container select {
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border: 1.5px solid var(--color-secondary);
+  border-radius: 6px;
+  background-color: var(--color-light-cyan);
+  color: var(--color-dark-blue);
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.publicaciones-container select:hover,
+.publicaciones-container select:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.error, .cargando, .vacio {
+  margin: 1rem 0;
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.error {
+  background-color: #fdecea;
+  color: var(--color-coral-red);
+  border: 1.5px solid var(--color-coral-red);
+}
+
+.cargando {
+  background-color: var(--color-light-cyan);
+  color: var(--color-teal);
+  border: 1.5px solid var(--color-teal);
+}
+
+.vacio {
+  background-color: var(--color-secondary);
+  color: var(--color-dark-blue);
+  border: 1.5px solid var(--color-primary);
+}
+
+button {
+  display: block;
+  margin: 1.5rem auto 0 auto;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+button:disabled {
+  background-color: var(--color-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--color-secondary);
+}
