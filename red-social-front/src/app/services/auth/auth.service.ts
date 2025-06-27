@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { Usuario } from '../../core/models/perfil.model';
+import { Publicacion } from '../../core/models/publicacion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +71,15 @@ export class AuthService {
   getUsuarioId(): string | null {
     const payload = this.getPayload();
     return payload?.sub || null; // "sub" es lo típico para user ID
+  }
+
+  // Método para obtener perfil del usuario logueado
+  getPerfilUsuario(): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.baseUrl}/perfil`);
+  }
+  // Método para obtener publicaciones del usuario
+  getPublicacionesUsuario(): Observable<{publicaciones: Publicacion[]}> {
+    return this.http.get<{publicaciones: Publicacion[]}>(`${this.baseUrl}/mis-publicaciones`);
   }
 
   // ------------------------

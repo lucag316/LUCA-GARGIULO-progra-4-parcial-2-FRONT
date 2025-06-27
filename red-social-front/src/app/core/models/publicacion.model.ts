@@ -1,3 +1,11 @@
+export interface Comentario {
+    contenido: string;
+    autor: {
+        username: string;
+        imagenPerfil?: string;
+    };
+    fechaCreacion: string;
+}
 
 export interface Publicacion {
     _id: string;
@@ -12,4 +20,6 @@ export interface Publicacion {
     likes: string[]; // IDs de usuarios que dieron like
     fechaCreacion: string;
     estaEliminado: boolean;
+    comentarios?: Comentario[];
 }
+

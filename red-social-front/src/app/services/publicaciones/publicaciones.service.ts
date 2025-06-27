@@ -40,21 +40,6 @@ export class PublicacionesService {
                 })
             );
     }
-    /*getPublicaciones(
-        orden: 'fecha' | 'likes', 
-        offset: number, 
-        limit: number
-    ): Observable<Publicacion[]> {
-
-        const params = new HttpParams()
-            .set('orden', orden)
-            .set('offset', offset.toString())
-            .set('limit', limit.toString());
-
-        console.log(`GET ${this.baseUrl}?orden=${orden}&offset=${offset}&limit=${limit}`);
-        return this.http.get<Publicacion[]>(this.baseUrl, { params });
-    }*/
-
     /**
    * Da me gusta a una publicación
    */
@@ -69,7 +54,12 @@ export class PublicacionesService {
         return this.http.delete(`${this.baseUrl}/${publicacionId}/me-gusta`);  // Igual acá "me-gusta"
     }
 
+    // En tu servicio de Angular
+    getUserPosts(userId: string): Observable<Publicacion[]> {
+        return this.http.get<Publicacion[]>(`${this.baseUrl}/posts/user/${userId}`);
+    }
 
-
-
+    getUltimasPublicaciones(userId: string, limit: number = 3) {
+        return this.http.get<Publicacion[]>(`http://localhost:3000/posts/user/${userId}?limit=${limit}`);
+    }
 }

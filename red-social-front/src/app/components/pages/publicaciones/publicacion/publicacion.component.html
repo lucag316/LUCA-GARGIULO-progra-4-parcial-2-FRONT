@@ -5,14 +5,14 @@
     
     <!-- Imagen opcional -->
     <div *ngIf="publicacion.imagenUrl" class="imagen-container">
-        <img [src]="publicacion.imagenUrl" alt="Imagen de publicación" />
+        <img *ngIf="publicacion.imagenUrl" [src]="'http://localhost:3000/' + publicacion.imagenUrl" alt="Imagen del post">
     </div>
 
     <!-- Autor y fecha -->
     <div class="info-publicacion">
         <span class="autor">
         <img *ngIf="publicacion.autor.imagenPerfil" 
-            [src]="publicacion.autor.imagenPerfil" 
+            [src]="'http://localhost:3000/' + publicacion.autor.imagenPerfil" 
             alt="Foto perfil" 
             class="foto-perfil" />
         {{ publicacion.autor.username }}

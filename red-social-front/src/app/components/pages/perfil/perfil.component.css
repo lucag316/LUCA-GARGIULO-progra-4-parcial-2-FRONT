@@ -1,0 +1,59 @@
+.perfil-container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  animation: fadeInUp 0.5s ease;
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.foto-perfil {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary);
+}
+
+.info {
+  flex: 1;
+}
+
+.publicaciones {
+  margin-top: 40px;
+}
+
+.publicacion {
+  margin-bottom: 20px;
+}
+
+.imagen-publicacion {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comentarios {
+  background-color: var(--color-white);
+  margin-top: 15px;
+  padding: 10px;
+  border-left: 4px solid var(--color-teal);
+  border-radius: 6px;
+}
+
+.comentario {
+  margin-bottom: 8px;
+}
+
+.cargando {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+  color: var(--color-dark-gray);
+}

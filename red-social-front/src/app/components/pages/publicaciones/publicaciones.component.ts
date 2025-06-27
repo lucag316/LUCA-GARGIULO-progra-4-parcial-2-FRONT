@@ -18,7 +18,7 @@ export class PublicacionesComponent implements OnInit {
     publicaciones: Publicacion[] = [];
     orden: 'fecha' | 'likes' = 'fecha';
     offset = 0;
-    limit = 5;
+    limit = 10;
     cargando = false;
     error: string | null = null;
     hayMas = true;

@@ -1,0 +1,86 @@
+<!-- <div *ngIf="usuario" class="perfil-container">
+  <img 
+    *ngIf="usuario.imagenPerfil" 
+    [src]="usuario.imagenPerfil" 
+    alt="Foto de perfil" 
+    class="foto-perfil" />
+  
+  <h2>{{ usuario.username }}</h2>
+  <p>{{ usuario.nombre }} {{ usuario.apellido }}</p>
+  <p>{{ usuario.email }}</p>
+</div> -->
+
+
+
+
+<!--ESTE ES MAS ACTUALIZADO-->
+<!-- <div *ngFor="let pub of publicaciones">
+  <h4>{{ pub.titulo }}</h4>
+  <p>{{ pub.descripcion }}</p>
+  <img *ngIf="pub.imagenUrl" [src]="'http://localhost:3000/' + pub.imagenUrl" />
+
+  <div *ngIf="pub.comentarios?.length > 0">
+    <h5>Comentarios:</h5>
+    <div *ngFor="let c of pub.comentarios">
+      <p><strong>{{ c.autor.username }}:</strong> {{ c.contenido }}</p>
+    </div>
+  </div>
+</div> -->
+<div *ngIf="cargando" class="cargando">
+  <p>Cargando perfil...</p>
+</div>
+
+<div *ngIf="!cargando && usuario" class="perfil-container">
+
+  <!-- Perfil del usuario -->
+  <section class="card perfil">
+    <img
+      *ngIf="usuario.imagenPerfil"
+      [src]="'http://localhost:3000/' + usuario.imagenPerfil"
+      alt="Foto de perfil"
+      class="foto-perfil"
+    />
+    <div class="info">
+      <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+      <p><strong>Email:</strong> {{ usuario.email }}</p>
+      <p><strong>Username:</strong> {{ usuario.username }}</p>
+      <p><strong>Descripción:</strong> {{ usuario.descripcion || '-' }}</p>
+      <p><strong>Fecha de nacimiento:</strong> {{ usuario.fechaNacimiento | date }}</p>
+      <p><strong>Edad:</strong> {{ getEdad() }} años</p>
+    </div>
+  </section>
+
+  <!-- Publicaciones -->
+  <section class="publicaciones">
+    <h3>Mis últimas publicaciones</h3>
+
+    <div *ngIf="publicaciones.length === 0">
+      <p>No tenés publicaciones todavía.</p>
+    </div>
+
+    <div *ngFor="let pub of publicaciones" class="card publicacion">
+      <h4>{{ pub.titulo }}</h4>
+      <p>{{ pub.descripcion }}</p>
+
+      <img
+        *ngIf="pub.imagenUrl"
+        [src]="'http://localhost:3000/' + pub.imagenUrl"
+        alt="Imagen de la publicación"
+        class="imagen-publicacion"
+      />
+
+      <p><strong>Likes:</strong> {{ pub.likes.length }}</p>
+
+      <div class="comentarios" *ngIf="pub.comentarios?.length">
+        <h5>Comentarios:</h5>
+        <div *ngFor="let c of pub.comentarios" class="comentario">
+          <strong>{{ c.autor.username }}:</strong> {{ c.contenido }}
+        </div>
+      </div>
+
+      <div *ngIf="!pub.comentarios?.length">
+        <p><em>Sin comentarios</em></p>
+      </div>
+    </div>
+  </section>
+</div>
