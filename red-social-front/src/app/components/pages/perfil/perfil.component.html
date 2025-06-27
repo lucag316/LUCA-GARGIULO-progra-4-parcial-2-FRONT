@@ -8,7 +8,7 @@
   <section class="card perfil">
     <!-- Foto de perfil circular -->
     <img
-      [src]="usuario.imagenPerfil ? 'http://localhost:3000/' + usuario.imagenPerfil : 'assets/images/default-profile.jpeg'"
+      [src]="usuario.imagenPerfil || 'assets/images/default-profile.jpeg'"
       alt="Foto de perfil"
       class="foto-perfil"
     />

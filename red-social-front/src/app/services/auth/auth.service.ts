@@ -84,18 +84,19 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<Usuario> {
-    return this.http.get<Usuario>(`http://localhost:3000/users/me`, {
-        headers: this.getAuthHeaders()
-    }).pipe(
-        map(user => {
-            // Si la imagen no tiene http, agregar la URL base
-            if (user.imagenPerfil && !user.imagenPerfil.startsWith('http')) {
-                user.imagenPerfil = `http://localhost:3000/${user.imagenPerfil}`;
-            }
-            return user;
-        })
-    );
-}
+      return this.http.get<Usuario>(`http://localhost:3000/users/me`, {
+          headers: this.getAuthHeaders()
+      }).pipe(
+          map(user => {
+              // Si la imagen no tiene http, agregar la URL base
+              // ACÁ es donde lo corregís
+              if (user.imagenPerfil && !user.imagenPerfil.startsWith('http')) {
+                  user.imagenPerfil = `http://localhost:3000/uploads/${user.imagenPerfil}`; // ✅ CORRECTO
+              }
+              return user;
+          })
+      );
+  }
   private getAuthHeaders() {
     const token = localStorage.getItem('token');
     return {

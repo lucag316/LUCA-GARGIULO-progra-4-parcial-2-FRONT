@@ -50,7 +50,7 @@ export class PerfilComponent implements OnInit{
       this.authService.getCurrentUser().subscribe({
           next: (usuario) => {
               this.usuario = usuario;
-              
+              console.log('Usuario recibido:', usuario);
               // Cargar publicaciones
               this.publicacionesService.getUltimasPublicaciones(payload.sub, 3).subscribe({
                   next: (res) => {
