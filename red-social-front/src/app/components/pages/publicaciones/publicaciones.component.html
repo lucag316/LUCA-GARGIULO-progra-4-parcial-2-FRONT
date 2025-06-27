@@ -9,17 +9,46 @@
         <option value="likes">Cantidad de Me Gusta</option>
     </select>
 
+    <button class="btn-primary" (click)="mostrarFormulario = !mostrarFormulario">
+        {{ mostrarFormulario ? 'Cancelar' : 'Nueva publicación' }}
+    </button>
+
+    <div *ngIf="mostrarFormulario" class="formulario-publicacion">
+        <form (ngSubmit)="crearPublicacion()" #formPub="ngForm">
+            <input type="text" name="titulo" [(ngModel)]="nuevaPublicacion.titulo" required placeholder="Título" />
+            
+            <textarea name="descripcion" [(ngModel)]="nuevaPublicacion.descripcion" required placeholder="Descripción"></textarea>
+            
+            <input type="file" (change)="onFileSelected($event)" />
+
+            <button class="btn-primary" type="submit" [disabled]="formPub.invalid || cargando">
+            Publicar
+            </button>
+        </form>
+    </div>
+
     <!-- Mensajes -->
     <div *ngIf="error" class="error">{{ error }}</div>
     <div *ngIf="cargando && publicaciones.length === 0" class="cargando">Cargando publicaciones...</div>
     <div *ngIf="!cargando && publicaciones.length === 0" class="vacio">No hay publicaciones para mostrar.</div>
 
     <!-- Listado de publicaciones -->
-    <app-publicacion 
-        *ngFor="let p of publicaciones" 
-        [publicacion]="p" 
-        (likeCambio)="recargar()">
-    </app-publicacion>
+    <div *ngFor="let p of publicaciones" class="card publicacion-wrapper">
+  
+        <app-publicacion
+            [publicacion]="p"
+            (likeCambio)="recargar()">
+        </app-publicacion>
+
+        <!-- Botón Eliminar SOLO si es del usuario logueado -->
+        <button
+            *ngIf="usuarioId === p.autor._id"
+            class="btn-eliminar"
+            (click)="eliminarPublicacion(p._id)">
+            Eliminar
+        </button>
+
+    </div>
 
     <!-- Botón cargar más -->
     <button (click)="cargarPublicaciones()" [disabled]="cargando || !hayMas" *ngIf="publicaciones.length > 0">

@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { PublicacionComponent } from './publicacion/publicacion.component';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from '../../../services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     standalone: true,
@@ -23,10 +25,84 @@ export class PublicacionesComponent implements OnInit {
     error: string | null = null;
     hayMas = true;
 
-    constructor(private publicacionesService: PublicacionesService) { }
+    
+    mostrarFormulario = false;
+    nuevaPublicacion = {
+        titulo: '',
+        descripcion: '',
+        imagen: null as File | null
+    };
+    
+    usuarioId: string | null = null;
+
+    constructor(
+        private publicacionesService: PublicacionesService,
+        private authService: AuthService,
+        private snackBar: MatSnackBar
+    ) { 
+        this.usuarioId = this.authService.getUsuarioId();
+    }
 
     ngOnInit(): void {
         this.cargarPublicaciones(true);
+    }
+
+    onFileSelected(event: Event): void {
+        const input = event.target as HTMLInputElement;
+            if (input?.files && input.files.length > 0) {
+                this.nuevaPublicacion.imagen = input.files[0];
+            }
+    }
+
+    crearPublicacion(): void {
+        if (!this.nuevaPublicacion.titulo || !this.nuevaPublicacion.descripcion) return;
+
+        const formData = new FormData();
+        formData.append('titulo', this.nuevaPublicacion.titulo);
+        formData.append('descripcion', this.nuevaPublicacion.descripcion);
+
+        if (this.nuevaPublicacion.imagen) {
+            formData.append('imagenPost', this.nuevaPublicacion.imagen); // <- mismo nombre que en el backend
+        }
+
+        this.cargando = true;
+
+        this.publicacionesService.crearPublicacion(formData).subscribe({
+            next: () => {
+                this.mostrarFormulario = false;
+                this.nuevaPublicacion = { titulo: '', descripcion: '', imagen: null };
+                this.recargar(); // actualiza la lista
+            },
+            error: (err) => {
+                this.error = 'Error al crear publicación';
+                this.cargando = false;
+                console.error(err);
+            },
+            complete: () => {
+                this.cargando = false;
+            }
+        });
+    }
+
+    eliminarPublicacion(id: string) {
+        if (!confirm('¿Estás seguro de que querés eliminar esta publicación?')) return;
+
+        this.cargando = true;
+        this.publicacionesService.eliminarPublicacion(id).subscribe({
+            next: () => {
+                this.showMessage('Publicación eliminada');
+                this.recargar(); // recargar lista
+            },
+            error: (err) => {
+                if (err.status === 403) {
+                    this.showMessage('No tienes permiso para eliminar esta publicación', true);
+                } else {
+                    this.showMessage('Error al eliminar publicación', true);
+                }
+                console.error(err);
+            },
+            complete: () => (this.cargando = false)
+        });
     }
 
     cambiarOrden(nuevoOrden: string) {
@@ -83,6 +159,14 @@ export class PublicacionesComponent implements OnInit {
         this.publicaciones = [];
         this.cargarPublicaciones(true);
     }
+    showMessage(message: string, isError: boolean = false): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: isError ? 'snackbar-error' : 'snackbar-success'
+    });
+  }
 }
 /*
 import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';

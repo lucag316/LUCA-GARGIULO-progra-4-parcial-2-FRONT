@@ -62,4 +62,16 @@ export class PublicacionesService {
     getUltimasPublicaciones(userId: string, limit: number = 3) {
         return this.http.get<Publicacion[]>(`http://localhost:3000/posts/user/${userId}?limit=${limit}`);
     }
+
+    crearPublicacion(data: FormData): Observable<any> {
+        return this.http.post(`${this.baseUrl}`, data); // POST /posts
+    }
+
+    eliminarPublicacion(id: string): Observable<any> {
+        return this.http.delete(`${this.baseUrl}/${id}`, {
+            headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+    }
 }
