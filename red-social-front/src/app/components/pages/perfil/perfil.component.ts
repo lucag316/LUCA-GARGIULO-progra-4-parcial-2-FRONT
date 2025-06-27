@@ -8,11 +8,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
+import { MatIcon } from '@angular/material/icon';
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   standalone: true,
   selector: 'app-perfil',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIcon, MatSpinner],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
@@ -29,7 +31,7 @@ export class PerfilComponent implements OnInit{
   constructor(
     private authService: AuthService,
     private publicacionesService: PublicacionesService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -37,39 +39,37 @@ export class PerfilComponent implements OnInit{
   }
 
   cargarDatos(): void {
-    const payload = this.authService.getPayload(); // ⚠️ del token
-    if (!payload?.sub) {
-      this.showMessage('No se encontró el ID del usuario', true);
-      this.cargando = false;
-      return;
-    }
-
-    // 1. Cargar perfil desde token
-    this.usuario = {
-      _id: payload.sub,
-      nombre: payload.nombre, // si lo incluís en el token
-      apellido: payload.apellido,
-      email: payload.email,
-      username: payload.username,
-      imagenPerfil: payload.imagenPerfil,
-      descripcion: payload.descripcion,
-      fechaNacimiento: payload.fechaNacimiento,
-      perfil: payload.perfil,
-      isActive: true
-    };
-
-    // 2. Cargar publicaciones
-    this.publicacionesService.getUltimasPublicaciones(payload.sub, 3).subscribe({
-      next: (res) => {
-        this.publicaciones = res;
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.cargando = false;
-        this.showMessage('Error al cargar publicaciones', true);
+      const payload = this.authService.getPayload();
+      if (!payload?.sub) {
+          this.showMessage('No se encontró el ID del usuario', true);
+          this.cargando = false;
+          return;
       }
-    });
+
+      // Obtener datos actualizados del backend
+      this.authService.getCurrentUser().subscribe({
+          next: (usuario) => {
+              this.usuario = usuario;
+              
+              // Cargar publicaciones
+              this.publicacionesService.getUltimasPublicaciones(payload.sub, 3).subscribe({
+                  next: (res) => {
+                      this.publicaciones = res;
+                      this.cargando = false;
+                  },
+                  error: (err) => {
+                      console.error('Error:', err);
+                      this.cargando = false;
+                      this.showMessage('Error al cargar publicaciones', true);
+                  }
+              });
+          },
+          error: (err) => {
+              console.error('Error al cargar usuario:', err);
+              this.cargando = false;
+              this.showMessage('Error al cargar perfil', true);
+          }
+      });
   }
 
   getEdad(): number | null {

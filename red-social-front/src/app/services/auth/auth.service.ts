@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Usuario } from '../../core/models/perfil.model';
 import { Publicacion } from '../../core/models/publicacion.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +83,26 @@ export class AuthService {
     return this.http.get<{publicaciones: Publicacion[]}>(`${this.baseUrl}/mis-publicaciones`);
   }
 
+  getCurrentUser(): Observable<Usuario> {
+    return this.http.get<Usuario>(`http://localhost:3000/users/me`, {
+        headers: this.getAuthHeaders()
+    }).pipe(
+        map(user => {
+            // Si la imagen no tiene http, agregar la URL base
+            if (user.imagenPerfil && !user.imagenPerfil.startsWith('http')) {
+                user.imagenPerfil = `http://localhost:3000/${user.imagenPerfil}`;
+            }
+            return user;
+        })
+    );
+}
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      Authorization: `Bearer ${token}`
+    };
+  }
+
   // ------------------------
   // 7. Obtener el rol (usuario / admin)
   // ------------------------
@@ -89,6 +110,8 @@ export class AuthService {
     const payload = this.getPayload();
     return payload?.rol || null;
   }
+
+  
 
   // ------------------------
   // 8. Logout

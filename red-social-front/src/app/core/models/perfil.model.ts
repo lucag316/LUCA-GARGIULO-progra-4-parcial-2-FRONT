@@ -7,7 +7,7 @@ export interface Usuario {
     username: string;
     fechaNacimiento: Date;
     descripcion: string;
-    imagenPerfil?: string;
+    imagenPerfil?: string ;
     perfil: string;
     isActive: boolean;
     createdAt?: Date; // Asegúrate de que coincida con tu backend
