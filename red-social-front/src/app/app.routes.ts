@@ -9,6 +9,7 @@ import { PerfilComponent } from './components/pages/perfil/perfil.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PublicacionComponent } from './components/pages/publicaciones/publicacion/publicacion.component';
 import { PublicacionDetalleComponent } from './components/pages/publicaciones/publicacion-detalle/publicacion-detalle.component';
+import { LoadingComponent } from './components/shared/loading/loading.component';
 
 export const routes: Routes = [
 
@@ -44,6 +45,10 @@ export const routes: Routes = [
         path: 'perfil',
         component: PerfilComponent,
         canActivate: [AuthGuard]  
+    },
+    {
+        path: 'loading',
+        component: LoadingComponent,
     },
     {
         path: '**',

@@ -28,5 +28,21 @@ export class AppComponent implements OnInit {
     if (!estaLogueado && rutaActual !== '/login' && rutaActual !== '/registro') {
       this.router.navigate(['/login']);
     }
+    this.verificarAutenticacion();
+  }
+
+  verificarAutenticacion() {
+    this.authService.verificarToken().subscribe({
+      next: (response) => {
+        if (response.valid) {
+          this.router.navigate(['/publicaciones']);
+        } else {
+          this.router.navigate(['/login']);
+        }
+      },
+      error: () => {
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

@@ -4,6 +4,9 @@ import { Observable, tap } from 'rxjs';
 import { Usuario } from '../../core/models/perfil.model';
 import { Publicacion } from '../../core/models/publicacion.model';
 import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs';
+
 
 // Crear interfaces para las respuestas:
 interface LoginResponse {
@@ -142,5 +145,17 @@ export class AuthService {
   // ------------------------
   logout(): void {
     localStorage.removeItem('token');
+  }
+
+  verificarToken(): Observable<{ valid: boolean, user?: any }> {
+    const token = this.getToken();
+    if (!token) return of({ valid: false });
+
+    return this.http.post<{ valid: boolean, user?: any }>(
+      `${this.baseUrl}/autorizar`,
+      { token }
+    ).pipe(
+      catchError(() => of({ valid: false }))
+    );
   }
 }
