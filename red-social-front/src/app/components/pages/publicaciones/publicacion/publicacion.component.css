@@ -97,3 +97,122 @@
   cursor: wait;
   opacity: 0.6;
 }
+
+.comentario {
+  background-color: var(--color-light-cyan);
+  border-left: 4px solid var(--color-primary);
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 6px;
+  animation: fadeInUp 0.3s ease;
+}
+
+.comentario .autor {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.comentario .autor img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+  object-fit: cover;
+}
+
+.comentario p {
+  margin: 0.3em 0;
+  line-height: 1.4;
+  color: var(--color-dark-gray);
+}
+
+.comentario small {
+  color: var(--color-dark-gray);
+  font-size: 0.75rem;
+}
+
+.modificado {
+  font-style: italic;
+  font-size: 0.75rem;
+  color: var(--color-coral-red);
+  margin-left: 0.5em;
+}
+
+hr.comentario-divider {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+}
+
+.comentario textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 0.5em;
+  font-size: 0.9rem;
+  border: 1px solid var(--color-dark-gray);
+  border-radius: 4px;
+  resize: vertical;
+  margin-bottom: 0.5em;
+}
+
+.comentario button {
+  margin-right: 0.5em;
+  padding: 0.4em 0.8em;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+
+.comentario button:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.comentario button:first-of-type {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.comentario button:last-of-type {
+  background-color: var(--color-coral-red);
+  color: var(--color-white);
+}
+
+.nuevo-comentario {
+  margin-top: 2em;
+}
+
+.nuevo-comentario textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 0.6em;
+  border: 1px solid var(--color-dark-gray);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  resize: vertical;
+  margin-bottom: 0.5em;
+}
+
+.nuevo-comentario button {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: 0.6em 1.2em;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nuevo-comentario button:hover {
+  background-color: var(--color-secondary);
+}
+
+.error {
+  color: var(--color-coral-red);
+  font-size: 0.85rem;
+  margin-top: 0.4em;
+}

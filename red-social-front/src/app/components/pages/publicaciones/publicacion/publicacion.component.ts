@@ -3,12 +3,16 @@ import { Publicacion } from '../../../../core/models/publicacion.model';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { PublicacionesService } from '../../../../services/publicaciones/publicaciones.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Comentario } from '../../../../core/models/comentario.model';
+import { ComentariosService } from '../../../../services/comentarios/comentarios.service';
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 @Component({
     standalone: true,
     selector: 'app-publicacion',
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule, MatSpinner],
     templateUrl: './publicacion.component.html',
     styleUrl: './publicacion.component.css'
 })
@@ -22,9 +26,21 @@ export class PublicacionComponent {
     yaDioLike = false;
     procesandoLike = false;
 
+    nuevoComentario: string = '';
+    comentando: boolean = false;
+    errorComentario: string = '';
+
+    comentarios: Comentario[] = [];
+    offset = 0;
+    limit = 3;
+    totalComentarios = 0;
+    cargandoComentarios = false;
+    usuarioActualId: string | null = null;
+
     constructor(
         private authService: AuthService,
-        private publicacionesService: PublicacionesService
+        private publicacionesService: PublicacionesService,
+        private comentariosService: ComentariosService
     ) {}
 
     ngOnInit(): void {
@@ -32,6 +48,8 @@ export class PublicacionComponent {
         if (!id) return; // Por seguridad
         this.usuarioId = id;
         this.verificarLike();
+        this.usuarioActualId = this.authService.getUsuarioId();
+        this.cargarComentarios();
     }
 
     ngOnChanges(): void {
@@ -75,5 +93,64 @@ export class PublicacionComponent {
                 }
             });
         }
+    }
+
+    agregarComentario(postId: string) {
+        if (!this.nuevoComentario.trim()) {
+            this.errorComentario = 'El comentario no puede estar vacío';
+            return;
+        }
+
+        this.comentando = true;
+        this.publicacionesService.addComentario(postId, this.nuevoComentario).subscribe({
+            next: (res) => {
+            this.publicacion = res; // actualiza con el post que incluye el nuevo comentario
+            this.nuevoComentario = '';
+            this.errorComentario = '';
+            this.comentando = false;
+            },
+            error: (err) => {
+            this.errorComentario = 'Error al enviar el comentario';
+            console.error(err);
+            this.comentando = false;
+            }
+        });
+    }
+
+    cargarComentarios(): void {
+        this.cargandoComentarios = true;
+        this.comentariosService.getComentarios(this.publicacion._id, this.offset, this.limit).subscribe({
+            next: (res) => {
+            this.comentarios.push(...res.comentarios);
+            this.totalComentarios = res.total;
+            this.offset += this.limit;
+            this.cargandoComentarios = false;
+            },
+            error: () => {
+            this.cargandoComentarios = false;
+            }
+        });
+    }
+
+    iniciarEdicion(comentario: Comentario): void {
+        comentario.editando = true;
+        comentario.nuevoContenido = comentario.contenido;
+    }
+
+    cancelarEdicion(comentario: Comentario): void {
+        comentario.editando = false;
+    }
+
+    guardarEdicion(comentario: Comentario): void {
+        if (!comentario.nuevoContenido?.trim()) return;
+        this.comentariosService.editarComentario(this.publicacion._id, comentario._id, comentario.nuevoContenido).subscribe({
+            next: () => {
+                comentario.contenido = comentario.nuevoContenido!;
+                comentario.editando = false;
+            },
+            error: () => {
+                alert('Error al editar comentario');
+            }
+        });
     }
 }

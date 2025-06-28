@@ -1,34 +1,86 @@
 <div class="publicacion-card" [class.procesando]="procesandoLike">
-    <h3 class="titulo">{{ publicacion.titulo }}</h3>
-    
-    <p class="descripcion">{{ publicacion.descripcion }}</p>
-    
-    <!-- Imagen opcional -->
-    <div *ngIf="publicacion.imagenUrl" class="imagen-container">
-        <img *ngIf="publicacion.imagenUrl" [src]="'http://localhost:3000/' + publicacion.imagenUrl" alt="Imagen del post">
+  <!-- Título y descripción -->
+  <h3 class="titulo">{{ publicacion.titulo }}</h3>
+  <p class="descripcion">{{ publicacion.descripcion }}</p>
+
+  <!-- Imagen opcional -->
+  <div *ngIf="publicacion.imagenUrl" class="imagen-container">
+    <img [src]="'http://localhost:3000/' + publicacion.imagenUrl" alt="Imagen del post" />
+  </div>
+
+  <!-- Autor y fecha -->
+  <div class="info-publicacion">
+    <span class="autor">
+      <img *ngIf="publicacion.autor.imagenPerfil" 
+           [src]="'http://localhost:3000/' + publicacion.autor.imagenPerfil" 
+           alt="Foto perfil" 
+           class="foto-perfil" />
+      {{ publicacion.autor.username }}
+    </span>
+    <span class="fecha">{{ publicacion.fechaCreacion | date:'medium' }}</span>
+  </div>
+
+  <!-- Likes -->
+  <div class="likes-container">
+    <button (click)="toggleLike()" 
+            [disabled]="procesandoLike"
+            [class.liked]="yaDioLike"
+            aria-label="Me gusta">
+      <span *ngIf="yaDioLike">💖</span>
+      <span *ngIf="!yaDioLike">🤍</span>
+      {{ publicacion.likes.length }}
+    </button>
+  </div>
+
+  <!-- Comentarios -->
+  <h3>Comentarios</h3>
+
+  <div *ngFor="let comentario of comentarios" class="comentario">
+    <!-- Info del autor -->
+    <div class="autor">
+      <img [src]="'http://localhost:3000/' + comentario.autor.imagenPerfil" 
+           alt="perfil" />
+      <strong>
+        {{ comentario.autor._id === usuarioActualId ? 'Vos' : comentario.autor.username }}
+      </strong>
     </div>
 
-    <!-- Autor y fecha -->
-    <div class="info-publicacion">
-        <span class="autor">
-        <img *ngIf="publicacion.autor.imagenPerfil" 
-            [src]="'http://localhost:3000/' + publicacion.autor.imagenPerfil" 
-            alt="Foto perfil" 
-            class="foto-perfil" />
-        {{ publicacion.autor.username }}
-        </span>
-        <span class="fecha">{{ publicacion.fechaCreacion | date:'medium' }}</span>
+    <!-- Comentario normal -->
+    <div *ngIf="!comentario.editando">
+      <p>
+        {{ comentario.contenido }}
+        <span *ngIf="comentario.modificado" class="modificado">(editado)</span>
+      </p>
+      <small>{{ comentario.fechaCreacion | date:'short' }}</small>
+      <!-- Botón editar (solo si es tuyo) -->
+      <button *ngIf="comentario.autor._id === usuarioActualId"
+              (click)="iniciarEdicion(comentario)">
+        ✏️ Editar
+      </button>
     </div>
 
-    <!-- Likes -->
-    <div class="likes-container">
-        <button (click)="toggleLike()" 
-                [disabled]="procesandoLike"
-                [class.liked]="yaDioLike"
-                aria-label="Me gusta">
-        <span *ngIf="yaDioLike">💖</span>
-        <span *ngIf="!yaDioLike">🤍</span>
-        {{ publicacion.likes.length }}
-        </button>
+    <!-- Comentario en edición -->
+    <div *ngIf="comentario.editando">
+      <textarea [(ngModel)]="comentario.nuevoContenido"></textarea>
+      <button (click)="guardarEdicion(comentario)">💾 Guardar</button>
+      <button (click)="cancelarEdicion(comentario)">❌ Cancelar</button>
     </div>
+
+    <hr class="comentario-divider" />
+  </div>
+
+  <!-- Cargar más comentarios -->
+  <div *ngIf="comentarios.length < totalComentarios && !cargandoComentarios">
+    <button (click)="cargarComentarios()">Cargar más</button>
+  </div>
+  <mat-spinner *ngIf="cargandoComentarios"></mat-spinner>
+
+  <!-- Nuevo comentario -->
+  <div class="nuevo-comentario">
+    <textarea [(ngModel)]="nuevoComentario" placeholder="Escribí tu comentario..."></textarea>
+    <button (click)="agregarComentario(publicacion._id)" [disabled]="comentando">
+      {{ comentando ? 'Enviando...' : 'Comentar' }}
+    </button>
+    <p class="error" *ngIf="errorComentario">{{ errorComentario }}</p>
+  </div>
 </div>

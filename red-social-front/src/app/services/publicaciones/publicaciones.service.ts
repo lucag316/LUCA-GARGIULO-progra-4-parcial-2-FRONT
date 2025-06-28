@@ -74,4 +74,11 @@ export class PublicacionesService {
             }
         });
     }
+
+    addComentario(postId: string, contenido: string): Observable<Publicacion> {
+        return this.http.post<Publicacion>(
+            `http://localhost:3000/posts/${postId}/comentarios`,
+            { contenido }
+        );
+    }
 }
