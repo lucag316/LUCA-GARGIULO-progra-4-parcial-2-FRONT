@@ -85,10 +85,4 @@ export class LoginComponent {
             panelClass: isError ? 'snackbar-error' : 'snackbar-success'
         });
     }
-
-
-
-
-
-
 }

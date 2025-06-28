@@ -5,6 +5,17 @@ import { Usuario } from '../../core/models/perfil.model';
 import { Publicacion } from '../../core/models/publicacion.model';
 import { map } from 'rxjs/operators';
 
+// Crear interfaces para las respuestas:
+interface LoginResponse {
+  data: {
+    token: string;
+    user: Usuario;
+  };
+  success: boolean;
+  message?: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,22 +28,32 @@ export class AuthService {
   // ------------------------
   // 1. LOGIN: guarda token
   // ------------------------
-  login(datos: { correoOrUsername: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, datos).pipe(
-      tap((res: any) => {
-        localStorage.setItem('token', res.data.token); // ojo que el token está dentro de res.data.token según tu backend
-        console.log('Token guardado:', res.data.token); // Debug
+  // Luego actualizar los métodos:
+  login(datos: { correoOrUsername: string; password: string }): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, datos).pipe(
+      tap((res) => {
+        if (res.data?.token) {
+          localStorage.setItem('token', res.data.token);
+        }
       })
     );
   }
-
   // ------------------------
   // 2. REGISTRO (opcional)
   // ------------------------
-  register(datos: FormData): Observable<any> {
-    return this.http.post(`${this.baseUrl}/registro`, datos).pipe(
-      tap((res: any) => {
-        localStorage.setItem('token', res.data.token); 
+  // Añadir manejo de errores en register()
+  register(datos: FormData): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/registro`, datos).pipe(
+      tap({
+        next: (res) => {
+          if (res.data?.token) {
+            localStorage.setItem('token', res.data.token);
+          }
+        },
+        error: (err) => {
+          console.error('Error en registro:', err);
+          throw err; // Propaga el error para manejo en componente
+        }
       })
     );
   }
@@ -54,14 +75,19 @@ export class AuthService {
   // ------------------------
   // 5. Decodificar payload del token
   // ------------------------
-  getPayload(): any | null {
+  getPayload(): { sub: string; rol: string } | null {
     const token = this.getToken();
     if (!token) return null;
 
     try {
-      return JSON.parse(atob(token.split('.')[1]));
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return {
+        sub: payload.sub,
+        rol: payload.perfil || payload.rol // Compatibilidad con ambos nombres
+      };
     } catch (e) {
-      console.error('Token inválido:', e);
+      console.error('Error decodificando token:', e);
+      this.logout(); // Limpiar token inválido
       return null;
     }
   }
@@ -104,14 +130,11 @@ export class AuthService {
     };
   }
 
-  // ------------------------
-  // 7. Obtener el rol (usuario / admin)
-  // ------------------------
+  // En tu backend usas "perfil", pero en getRol() buscas "rol"
   getRol(): string | null {
     const payload = this.getPayload();
-    return payload?.rol || null;
+    return  payload?.rol || null; // Más flexible
   }
-
   
 
   // ------------------------
