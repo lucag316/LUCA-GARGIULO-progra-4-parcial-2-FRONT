@@ -216,3 +216,17 @@ hr.comentario-divider {
   font-size: 0.85rem;
   margin-top: 0.4em;
 }
+
+
+.imagen-mini {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.imagen-detalle {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 12px;
+}

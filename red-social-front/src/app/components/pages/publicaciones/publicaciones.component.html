@@ -37,8 +37,14 @@
   
         <app-publicacion
             [publicacion]="p"
+            [modoDetalle]="false"
             (likeCambio)="recargar()">
         </app-publicacion>
+
+        <!-- Botón para ver la publicación -->
+        <a [routerLink]="['/publicaciones', p._id]" class="btn-primary">
+            Ver publicación
+        </a>
 
         <!-- Botón Eliminar SOLO si es del usuario logueado -->
         <button

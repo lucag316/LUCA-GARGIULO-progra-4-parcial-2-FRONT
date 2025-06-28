@@ -1,0 +1,11 @@
+<div *ngIf="cargando">Cargando publicación...</div>
+
+<div *ngIf="error && !cargando" class="error">
+  Hubo un error al cargar la publicación.
+</div>
+
+<app-publicacion
+  *ngIf="publicacion && !cargando"
+  [publicacion]="publicacion"
+  [modoDetalle]="true">
+</app-publicacion>

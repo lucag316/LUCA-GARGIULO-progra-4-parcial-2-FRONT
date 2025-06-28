@@ -8,11 +8,12 @@ import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../../../services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RouterLink } from '@angular/router';
 
 @Component({
     standalone: true,
     selector: 'app-publicaciones',
-    imports: [CommonModule, FormsModule, PublicacionComponent],
+    imports: [CommonModule, FormsModule, PublicacionComponent, RouterLink],
     templateUrl: './publicaciones.component.html',
     styleUrl: './publicaciones.component.css'
 })
@@ -54,6 +55,7 @@ export class PublicacionesComponent implements OnInit {
             }
     }
 
+    
     crearPublicacion(): void {
         if (!this.nuevaPublicacion.titulo || !this.nuevaPublicacion.descripcion) return;
 

@@ -20,6 +20,7 @@ import { MatSpinner } from '@angular/material/progress-spinner';
 
 export class PublicacionComponent {
     @Input() publicacion!: Publicacion;
+    @Input() modoDetalle: boolean = false;
     @Output() likeCambio = new EventEmitter<void>();
 
     usuarioId!: string;
@@ -36,6 +37,8 @@ export class PublicacionComponent {
     totalComentarios = 0;
     cargandoComentarios = false;
     usuarioActualId: string | null = null;
+
+    hayMasComentarios = true;
 
     constructor(
         private authService: AuthService,
@@ -54,6 +57,14 @@ export class PublicacionComponent {
 
     ngOnChanges(): void {
         this.verificarLike();
+        this.resetearComentarios();
+        this.cargarComentarios();
+    }
+
+    private resetearComentarios(): void {
+        this.comentarios = [];
+        this.offset = 0;
+        this.hayMasComentarios = true;
     }
 
     verificarLike(): void {
@@ -118,16 +129,22 @@ export class PublicacionComponent {
     }
 
     cargarComentarios(): void {
+        if (!this.publicacion || this.cargandoComentarios || !this.hayMasComentarios) return;
+
         this.cargandoComentarios = true;
-        this.comentariosService.getComentarios(this.publicacion._id, this.offset, this.limit).subscribe({
+        
+        this.comentariosService.getComentarios(this.publicacion._id, this.offset, this.limit)
+        .subscribe({
             next: (res) => {
-            this.comentarios.push(...res.comentarios);
-            this.totalComentarios = res.total;
-            this.offset += this.limit;
-            this.cargandoComentarios = false;
+                this.comentarios = [...this.comentarios, ...res.comentarios];
+                this.offset += this.limit;
+                this.hayMasComentarios = res.comentarios.length === this.limit;
             },
-            error: () => {
-            this.cargandoComentarios = false;
+            error: (err) => {
+                console.error('Error cargando comentarios:', err);
+            },
+            complete: () => {
+                this.cargandoComentarios = false;
             }
         });
     }

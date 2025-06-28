@@ -81,4 +81,16 @@ export class PublicacionesService {
             { contenido }
         );
     }
+
+    getPublicacionById(postId: string): Observable<Publicacion> {
+        return this.http.get<Publicacion>(`${this.baseUrl}/${postId}`);
+    }
+
+    getComentarios(postId: string, offset: number, limit: number): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/${postId}/comentarios`, {
+            params: new HttpParams()
+            .set('offset', offset.toString())
+            .set('limit', limit.toString())
+        });
+    }
 }

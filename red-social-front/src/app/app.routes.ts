@@ -7,6 +7,8 @@ import { LoginComponent } from './components/pages/login/login.component';
 import { RegistroComponent } from './components/pages/registro/registro.component';
 import { PerfilComponent } from './components/pages/perfil/perfil.component';
 import { AuthGuard } from './guards/auth.guard';
+import { PublicacionComponent } from './components/pages/publicaciones/publicacion/publicacion.component';
+import { PublicacionDetalleComponent } from './components/pages/publicaciones/publicacion-detalle/publicacion-detalle.component';
 
 export const routes: Routes = [
 
@@ -18,6 +20,16 @@ export const routes: Routes = [
     {
         path: 'publicaciones',
         component: PublicacionesComponent,
+        canActivate: [AuthGuard]
+    },/*
+    {
+        path: 'publicaciones/:id',
+        component: PublicacionComponent,
+        canActivate: [AuthGuard]
+    },*/
+    {
+        path: 'publicaciones/:id',
+        component: PublicacionDetalleComponent,
         canActivate: [AuthGuard]
     },
     {
