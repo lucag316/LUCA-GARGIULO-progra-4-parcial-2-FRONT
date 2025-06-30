@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, of, catchError, map } from 'rxjs';
 import { Usuario } from '../../core/models/perfil.model';
 import { Publicacion } from '../../core/models/publicacion.model';
-import { map } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { catchError } from 'rxjs';
+import { Router } from '@angular/router';
+import { ModalRenovarSessionComponent } from '../../components/shared/modal-renovar-session/modal-renovar-session.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 // Crear interfaces para las respuestas:
@@ -25,8 +25,10 @@ interface LoginResponse {
 export class AuthService {
 
   private baseUrl = 'http://localhost:3000/auth'; // o tu ruta del backend
+  private warningTimer: any; // 🆕 10 min
+  private logoutTimer: any;  // 🆕 15 min
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
 
   // ------------------------
   // 1. LOGIN: guarda token
@@ -37,6 +39,7 @@ export class AuthService {
       tap((res) => {
         if (res.data?.token) {
           localStorage.setItem('token', res.data.token);
+          this.iniciarContadoresSesion(); // 🆕 importante
         }
       })
     );
@@ -51,6 +54,7 @@ export class AuthService {
         next: (res) => {
           if (res.data?.token) {
             localStorage.setItem('token', res.data.token);
+            this.iniciarContadoresSesion(); // 🆕 importante
           }
         },
         error: (err) => {
@@ -145,6 +149,8 @@ export class AuthService {
   // ------------------------
   logout(): void {
     localStorage.removeItem('token');
+    this.detenerContadoresSesion(); // 🆕
+    this.router.navigate(['/login']); // 🆕
   }
 
   verificarToken(): Observable<{ valid: boolean, user?: any }> {
@@ -153,9 +159,70 @@ export class AuthService {
 
     return this.http.post<{ valid: boolean, user?: any }>(
       `${this.baseUrl}/autorizar`,
-      { token }
+      {},
+      { headers: this.getAuthHeaders() } // 🆕
     ).pipe(
       catchError(() => of({ valid: false }))
     );
   }
+
+  // 🆕 ---------------------------
+  // TEMPORIZADORES DE SESIÓN
+  // -----------------------------
+
+  iniciarContadoresSesion(): void {
+    this.detenerContadoresSesion(); // limpiar anteriores
+
+    // ⏰ A los 10 min (600.000 ms) → mostrar modal
+    this.warningTimer = setTimeout(() => {
+      this.abrirModalRenovacion();
+    }, 10 * 60 * 1000);
+
+    // ❌ A los 15 min (900.000 ms) → logout directo
+    this.logoutTimer = setTimeout(() => {
+      alert('Tu sesión ha expirado. Volvé a iniciar sesión.');
+      this.logout();
+    }, 15 * 60 * 1000);
+  }
+
+  detenerContadoresSesion(): void {
+    clearTimeout(this.warningTimer);
+    clearTimeout(this.logoutTimer);
+  }
+
+  // 🆕 ------------------------
+  // REFRESCAR TOKEN
+  // ------------------------
+  refrescarToken(): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(
+      `${this.baseUrl}/refrescar`,
+      {},
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+
+  // 🆕 --------------------------
+  // MOSTRAR AVISO DE RENOVACIÓN
+  // --------------------------
+  abrirModalRenovacion(): void {
+  const dialogRef = this.dialog.open(ModalRenovarSessionComponent);
+
+  dialogRef.afterClosed().subscribe((resultado: boolean) => {
+    if (resultado) {
+      this.refrescarToken().subscribe({
+        next: (res) => {
+          localStorage.setItem('token', res.token);
+          this.iniciarContadoresSesion();
+        },
+        error: () => {
+          alert('No se pudo renovar la sesión.');
+          this.logout();
+        }
+      });
+    }
+  });
+
+  
+}
 }
