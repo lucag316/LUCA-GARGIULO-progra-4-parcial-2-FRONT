@@ -1,4 +1,33 @@
-<div class="loading-container">
+<!-- <div class="loading-container">
     <div class="spinner"></div>
     <p>Cargando aplicación...</p>
+</div> -->
+
+
+
+
+<div class="loading-container">
+    <div class="loading-content">
+        <!-- Spinner animado -->
+        <div class="spinner">
+            <div class="spinner-inner"></div>
+        </div>
+        
+        <!-- Mensaje de carga -->
+        <h2 class="loading-message">Cargando tu red social</h2>
+        
+        <!-- Barra de progreso (opcional) -->
+        <div class="progress-container">
+            <div class="progress-bar" [style.width.%]="progress"></div>
+        </div>
+        
+        <!-- Mensaje secundario -->
+        <p class="loading-subtext">Verificando tu sesión...</p>
+    </div>
+    
+    <!-- Logo de la app (opcional) -->
+    <div class="app-brand">
+        <!-- <img src="assets/images/logo-red.png" alt="Logo de la red social" class="logo"> -->
+        <span class="app-name">SocialApp</span>
+    </div>
 </div>

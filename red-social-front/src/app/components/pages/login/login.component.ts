@@ -64,7 +64,10 @@ export class LoginComponent {
             next: (res) => {
                 this.showMessage('¡Inicio de sesión exitoso!');
                 this.loading = false;
-                this.router.navigate(['/publicaciones']);  // o la ruta que quieras después del login
+                // Redirigir a loading en lugar de publicaciones directamente
+                this.router.navigate(['/loading'], {
+                    state: { fromLogin: true } // Identificar que viene del login
+                });
             },
             error: (err) => {
                 const msg = err.error?.message || 'Error al iniciar sesión';
