@@ -1,22 +1,22 @@
 .publicaciones-container {
-  max-width: 720px;
-  margin: 1.5rem auto;
-  padding: 1rem 1.5rem;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
   background-color: var(--color-white);
-  border-radius: 10px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  font-family: 'Roboto', sans-serif;
-  color: var(--color-dark-blue);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.5s ease;
 }
 
 .publicaciones-container h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  color: var(--color-primary);
+  font-size: 2.2rem;
   text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--color-primary);
+  font-weight: 800;
 }
 
+/* Ordenar por */
 .publicaciones-container label {
   font-weight: 600;
   margin-right: 0.6rem;
@@ -24,26 +24,59 @@
 }
 
 .publicaciones-container select {
-  padding: 0.3rem 0.5rem;
+  padding: 0.4rem 0.6rem;
   font-size: 1rem;
-  border: 1.5px solid var(--color-secondary);
+  border: 2px solid var(--color-primary);
   border-radius: 6px;
   background-color: var(--color-light-cyan);
   color: var(--color-dark-blue);
-  cursor: pointer;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.publicaciones-container select:hover,
 .publicaciones-container select:focus {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 3px rgba(46, 196, 182, 0.3);
+  outline: none;
+}
+
+/* Botón nuevo / cancelar publicación */
+button.btn-primary {
+  margin: 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* Formulario */
+.formulario-publicacion {
+  background-color: var(--color-light-cyan);
+  padding: 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+}
+
+.formulario-publicacion input,
+.formulario-publicacion textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid var(--color-dark-gray);
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.formulario-publicacion input:focus,
+.formulario-publicacion textarea:focus {
   border-color: var(--color-primary);
   outline: none;
 }
 
+/* Estados */
 .error, .cargando, .vacio {
-  margin: 1rem 0;
-  padding: 0.7rem 1rem;
-  border-radius: 6px;
+  margin: 1.2rem 0;
+  padding: 0.9rem 1.2rem;
+  border-radius: 8px;
   text-align: center;
   font-weight: 600;
 }
@@ -51,72 +84,203 @@
 .error {
   background-color: #fdecea;
   color: var(--color-coral-red);
-  border: 1.5px solid var(--color-coral-red);
+  border: 2px solid var(--color-coral-red);
 }
 
 .cargando {
   background-color: var(--color-light-cyan);
   color: var(--color-teal);
-  border: 1.5px solid var(--color-teal);
+  border: 2px solid var(--color-teal);
 }
 
 .vacio {
   background-color: var(--color-secondary);
   color: var(--color-dark-blue);
-  border: 1.5px solid var(--color-primary);
+  border: 2px solid var(--color-primary);
 }
 
-button {
-  display: block;
-  margin: 1.5rem auto 0 auto;
-  padding: 0.6rem 1.2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  border: none;
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  cursor: pointer;
-  transition: background-color 0.25s ease;
+/* Cada publicación */
+.publicacion-wrapper {
+  margin-bottom: 1.5rem;
 }
 
-button:disabled {
-  background-color: var(--color-secondary);
-  cursor: not-allowed;
-  opacity: 0.7;
+/* Botones secundarios */
+.botones-publicacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
 }
 
-button:hover:not(:disabled) {
-  background-color: var(--color-secondary);
-}
-
-.formulario-publicacion {
-  margin-top: 20px;
-  padding: 1em;
-  background-color: var(--color-light-cyan);
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.formulario-publicacion input,
-.formulario-publicacion textarea {
-  display: block;
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid var(--color-dark-gray);
-}
-
+/* Estilos existentes para mantener coherencia */
 .btn-eliminar {
   background-color: var(--color-coral-red);
-  color: white;
+  color: var(--color-white);
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn-eliminar:hover {
   background-color: #c40e27;
+}
+
+/* Botón cargar más */
+button.load-more {
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .publicaciones-container {
+    padding: 1rem;
+  }
+
+  .publicaciones-container h2 {
+    font-size: 1.8rem;
+  }
+
+  .formulario-publicacion input,
+  .formulario-publicacion textarea {
+    font-size: 0.95rem;
+  }
+
+  button,
+  .btn-eliminar {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.filtros-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.orden-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.orden-wrapper label {
+  font-weight: 600;
+  color: var(--color-dark-gray);
+}
+
+.orden-wrapper select {
+  padding: 0.5rem 0.7rem;
+  font-size: 1rem;
+  border: 2px solid var(--color-secondary);
+  border-radius: 6px;
+  background-color: var(--color-light-cyan);
+  color: var(--color-dark-blue);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.orden-wrapper select:hover,
+.orden-wrapper select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.2);
+  outline: none;
+}
+
+/* Botón de nueva publicación */
+.btn-nueva {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-nueva:hover {
+  background-color: var(--color-secondary);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .filtros-barra {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .orden-wrapper {
+    justify-content: center;
+  }
+
+  .btn-nueva {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Contenedor del botón */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    width: 100%;
+}
+
+/* Estilo del botón */
+.btn-load-more {
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 220px;
+    justify-content: center;
+}
+
+.btn-load-more:hover:not(:disabled) {
+    background-color: var(--color-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-load-more:disabled {
+    background-color: var(--color-light-gray);
+    color: var(--color-dark-gray);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Spinner para estado de carga */
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Efecto al hacer clic */
+.btn-load-more:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

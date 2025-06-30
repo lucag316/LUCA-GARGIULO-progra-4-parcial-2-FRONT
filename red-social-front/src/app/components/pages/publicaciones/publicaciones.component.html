@@ -1,64 +1,77 @@
 <div class="publicaciones-container">
-
     <h2>Publicaciones</h2>
 
-    <!-- Selector de orden -->
-    <label for="orden">Ordenar por:</label>
-    <select id="orden" #ordenSelect (change)="cambiarOrden(ordenSelect.value)" [value]="orden">
-        <option value="fecha">Fecha</option>
-        <option value="likes">Cantidad de Me Gusta</option>
-    </select>
+    <!-- Filtros + acción -->
+    <div class="filtros-barra">
+        <div class="orden-wrapper">
+            <label for="orden">Ordenar por:</label>
+            <select id="orden" #ordenSelect (change)="cambiarOrden(ordenSelect.value)" [value]="orden">
+                <option value="fecha">Fecha</option>
+                <option value="likes">Cantidad de Me Gusta</option>
+            </select>
+        </div>
 
-    <button class="btn-primary" (click)="mostrarFormulario = !mostrarFormulario">
-        {{ mostrarFormulario ? 'Cancelar' : 'Nueva publicación' }}
-    </button>
-
-    <div *ngIf="mostrarFormulario" class="formulario-publicacion">
-        <form (ngSubmit)="crearPublicacion()" #formPub="ngForm">
-            <input type="text" name="titulo" [(ngModel)]="nuevaPublicacion.titulo" required placeholder="Título" />
-            
-            <textarea name="descripcion" [(ngModel)]="nuevaPublicacion.descripcion" required placeholder="Descripción"></textarea>
-            
-            <input type="file" (change)="onFileSelected($event)" />
-
-            <button class="btn-primary" type="submit" [disabled]="formPub.invalid || cargando">
-            Publicar
-            </button>
-        </form>
+        <button class="btn-nueva" (click)="mostrarFormulario = !mostrarFormulario">
+            {{ mostrarFormulario ? 'Cancelar' : 'Nueva publicación' }}
+        </button>
     </div>
 
-    <!-- Mensajes -->
+    <form *ngIf="mostrarFormulario" (ngSubmit)="crearPublicacion()" #formPub="ngForm" class="formulario-publicacion">
+        <input
+            type="text"
+            name="titulo"
+            [(ngModel)]="nuevaPublicacion.titulo"
+            required
+            placeholder="Título"
+        />
+        <textarea
+            name="descripcion"
+            [(ngModel)]="nuevaPublicacion.descripcion"
+            required
+            placeholder="Descripción"
+        ></textarea>
+        <input type="file" (change)="onFileSelected($event)" />
+        <button class="btn-primary" type="submit" [disabled]="formPub.invalid || cargando">Publicar</button>
+    </form>
+
+    <!-- Estados -->
     <div *ngIf="error" class="error">{{ error }}</div>
     <div *ngIf="cargando && publicaciones.length === 0" class="cargando">Cargando publicaciones...</div>
     <div *ngIf="!cargando && publicaciones.length === 0" class="vacio">No hay publicaciones para mostrar.</div>
 
     <!-- Listado de publicaciones -->
     <div *ngFor="let p of publicaciones" class="card publicacion-wrapper">
-  
         <app-publicacion
             [publicacion]="p"
             [modoDetalle]="false"
             (likeCambio)="recargar()">
         </app-publicacion>
 
-        <!-- Botón para ver la publicación -->
-        <a [routerLink]="['/publicaciones', p._id]" class="btn-primary">
-            Ver publicación
-        </a>
+        <!-- Contenedor de botones -->
+        <div class="botones-publicacion">
+            <a [routerLink]="['/publicaciones', p._id]" class="btn-primary">Ver publicación</a>
 
-        <!-- Botón Eliminar SOLO si es del usuario logueado -->
-        <button
-            *ngIf="usuarioId === p.autor._id"
-            class="btn-eliminar"
-            (click)="eliminarPublicacion(p._id)">
-            Eliminar
-        </button>
-
+            <button
+                *ngIf="usuarioId === p.autor._id"
+                class="btn-eliminar"
+                (click)="eliminarPublicacion(p._id)">
+                Eliminar
+            </button>
+        </div>
     </div>
 
-    <!-- Botón cargar más -->
-    <button (click)="cargarPublicaciones()" [disabled]="cargando || !hayMas" *ngIf="publicaciones.length > 0">
-        {{ cargando ? 'Cargando...' : (hayMas ? 'Cargar más' : 'No hay más publicaciones') }}
-    </button>
-
+    <!-- Reemplaza el botón actual por este -->
+    <div class="load-more-container" *ngIf="publicaciones.length > 0">
+        <button 
+            class="btn-load-more"
+            (click)="cargarPublicaciones()"
+            [disabled]="cargando || !hayMas">
+            <span *ngIf="!cargando">
+                {{ hayMas ? 'Cargar más publicaciones' : 'No hay más publicaciones' }}
+            </span>
+            <span *ngIf="cargando">
+                <i class="spinner"></i> Cargando...
+            </span>
+        </button>
+    </div>
 </div>

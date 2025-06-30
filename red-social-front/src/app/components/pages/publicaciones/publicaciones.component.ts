@@ -1,19 +1,20 @@
+
 import { Component, OnInit } from '@angular/core';
-import { PublicacionesService } from '../../../services/publicaciones/publicaciones.service';
-import { Publicacion } from '../../../core/models/publicacion.model';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PublicacionComponent } from './publicacion/publicacion.component';
-import { of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { AuthService } from '../../../services/auth/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterLink } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { PublicacionesService } from '../../../services/publicaciones/publicaciones.service';
+import { AuthService } from '../../../services/auth/auth.service';
+
+import { Publicacion } from '../../../core/models/publicacion.model';
+import { PublicacionComponent } from './publicacion/publicacion.component';
 
 @Component({
     standalone: true,
     selector: 'app-publicaciones',
-    imports: [CommonModule, FormsModule, PublicacionComponent, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, PublicacionComponent],
     templateUrl: './publicaciones.component.html',
     styleUrl: './publicaciones.component.css'
 })
@@ -23,17 +24,11 @@ export class PublicacionesComponent implements OnInit {
     offset = 0;
     limit = 10;
     cargando = false;
-    error: string | null = null;
     hayMas = true;
+    error: string | null = null;
 
-    
     mostrarFormulario = false;
-    nuevaPublicacion = {
-        titulo: '',
-        descripcion: '',
-        imagen: null as File | null
-    };
-    
+    nuevaPublicacion = this.getNuevaPublicacion();
     usuarioId: string | null = null;
 
     constructor(
@@ -48,14 +43,21 @@ export class PublicacionesComponent implements OnInit {
         this.cargarPublicaciones(true);
     }
 
-    onFileSelected(event: Event): void {
-        const input = event.target as HTMLInputElement;
-            if (input?.files && input.files.length > 0) {
-                this.nuevaPublicacion.imagen = input.files[0];
-            }
+    getNuevaPublicacion() {
+        return {
+        titulo: '',
+        descripcion: '',
+        imagen: null as File | null
+        };
     }
 
-    
+    onFileSelected(event: Event): void {
+        const fileInput = event.target as HTMLInputElement;
+        if (fileInput?.files?.length) {
+            this.nuevaPublicacion.imagen = fileInput.files[0];
+        }
+    }
+
     crearPublicacion(): void {
         if (!this.nuevaPublicacion.titulo || !this.nuevaPublicacion.descripcion) return;
 
@@ -72,13 +74,13 @@ export class PublicacionesComponent implements OnInit {
         this.publicacionesService.crearPublicacion(formData).subscribe({
             next: () => {
                 this.mostrarFormulario = false;
-                this.nuevaPublicacion = { titulo: '', descripcion: '', imagen: null };
+                this.nuevaPublicacion = this.getNuevaPublicacion();
                 this.recargar(); // actualiza la lista
+                this.showMessage('Publicación creada');
             },
             error: (err) => {
-                this.error = 'Error al crear publicación';
+                this.showMessage('Error al crear publicación', true);
                 this.cargando = false;
-                console.error(err);
             },
             complete: () => {
                 this.cargando = false;
@@ -86,28 +88,36 @@ export class PublicacionesComponent implements OnInit {
         });
     }
 
-    eliminarPublicacion(id: string) {
+    eliminarPublicacion(id: string): void {
         if (!confirm('¿Estás seguro de que querés eliminar esta publicación?')) return;
 
         this.cargando = true;
+
         this.publicacionesService.eliminarPublicacion(id).subscribe({
             next: () => {
                 this.showMessage('Publicación eliminada');
                 this.recargar(); // recargar lista
             },
             error: (err) => {
-                if (err.status === 403) {
-                    this.showMessage('No tienes permiso para eliminar esta publicación', true);
-                } else {
-                    this.showMessage('Error al eliminar publicación', true);
-                }
-                console.error(err);
+                const msg = err.status === 403
+                    ? 'No tienes permiso para eliminar esta publicación'
+                    : 'Error al eliminar publicación';
+                this.showMessage(msg, true);
             },
-            complete: () => (this.cargando = false)
+            complete: () => {
+                this.cargando = false;
+            }
         });
     }
 
-    cambiarOrden(nuevoOrden: string) {
+    cambiarOrden(nuevoOrden: string): void {
+        if (nuevoOrden !== 'fecha' && nuevoOrden !== 'likes') return;
+        if (nuevoOrden === this.orden) return;
+
+        this.orden = nuevoOrden;
+        this.recargar();
+    }
+    /*cambiarOrden(nuevoOrden: string): void {
         // Validación segura del tipo
         if (nuevoOrden !== 'fecha' && nuevoOrden !== 'likes') {
             console.error('Valor de orden no válido:', nuevoOrden);
@@ -124,128 +134,46 @@ export class PublicacionesComponent implements OnInit {
         this.hayMas = true;
         this.publicaciones = [];
         this.cargarPublicaciones(true);
-    }
+    }*/
 
-    cargarPublicaciones(reiniciar: boolean = false) {
+    cargarPublicaciones(reiniciar = false): void {
         if (this.cargando || !this.hayMas) return;
 
         this.cargando = true;
         this.error = null;
 
-        this.publicacionesService.getPublicaciones(this.orden, this.offset, this.limit)
-            .subscribe({
-                next: (data: Publicacion[]) => {
-                    // Verificación EXTRA segura
-                    const nuevasPublicaciones = Array.isArray(data) ? data : [];
-                    
-                    if (reiniciar) {
-                        this.publicaciones = nuevasPublicaciones;
-                    } else {
-                        this.publicaciones = [...this.publicaciones, ...nuevasPublicaciones];
-                    }
-                    
-                    this.offset += nuevasPublicaciones.length;
-                    this.hayMas = nuevasPublicaciones.length === this.limit;
-                    this.cargando = false;
-                },
+        this.publicacionesService.getPublicaciones(this.orden, this.offset, this.limit).subscribe({
+            next: (data: Publicacion[]) => {
+                const nuevas = Array.isArray(data) ? data : [];
+
+                this.publicaciones = reiniciar ? nuevas : [...this.publicaciones, ...nuevas];
+                this.offset += nuevas.length;
+                this.hayMas = nuevas.length === this.limit;
+            },
             error: (err) => {
                 this.error = 'Error al cargar publicaciones';
+                console.error(err);
+            },
+            complete: () => {
                 this.cargando = false;
-                console.error('Error completo:', err);
             }
         });
     }
-    recargar() {
+
+
+    recargar(): void {
         this.offset = 0;
         this.hayMas = true;
         this.publicaciones = [];
         this.cargarPublicaciones(true);
     }
+
     showMessage(message: string, isError: boolean = false): void {
-    this.snackBar.open(message, 'Cerrar', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: isError ? 'snackbar-error' : 'snackbar-success'
-    });
-  }
-}
-/*
-import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
-import { PublicacionesService } from '../../../services/publicaciones/publicaciones.service';
-import { Publicacion } from '../../../core/models/publicacion.model';
-import { Router } from '@angular/router';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PublicacionComponent } from './publicacion/publicacion.component';
-
-@Component({
-    standalone: true,
-    selector: 'app-publicaciones',
-    imports: [CommonModule, FormsModule, PublicacionComponent],
-    templateUrl: './publicaciones.component.html',
-    styleUrl: './publicaciones.component.css'
-})
-
-
-export class PublicacionesComponent implements OnInit{
-
-
-    publicaciones: Publicacion[] = [];
-    orden: 'fecha' | 'likes' = 'fecha'; // orden por defecto
-    offset = 0;
-    limit = 5; // cantidad de publicaciones por página
-    cargando = false;
-    error: string | null = null;
-    hayMas = true; // para paginación
-
-    constructor(private publicacionesService: PublicacionesService) { }
-
-    ngOnInit(): void {
-        this.cargarPublicaciones(true);
-    }
-
-    cambiarOrden(nuevoOrden: string) {
-        if (nuevoOrden !== 'fecha' && nuevoOrden !== 'likes') return;
-        if (this.orden === nuevoOrden) return;
-
-        this.orden = nuevoOrden;
-        this.offset = 0;
-        this.hayMas = true;
-        this.publicaciones = [];
-        this.cargarPublicaciones(true);
-    }
-
-
-    cargarPublicaciones(reiniciar: boolean = false) {
-        if (this.cargando || !this.hayMas) return;
-
-        this.cargando = true;
-        this.error = null;
-
-        this.publicacionesService.getPublicaciones(this.orden, this.offset, this.limit)
-            .subscribe({
-                next: (data) => {
-                    if (reiniciar) this.publicaciones = [];
-                    this.publicaciones.push(...data);
-                    this.offset += data.length;
-                    this.hayMas = data.length === this.limit; // si trajimos menos que limit, no hay más
-                    this.cargando = false;
-                },
-                error: (err) => {
-                    this.error = 'Error al cargar publicaciones.';
-                    this.cargando = false;
-                }
+        this.snackBar.open(message, 'Cerrar', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: isError ? 'snackbar-error' : 'snackbar-success'
         });
     }
-
-
-    recargar() {
-        this.offset = 0;
-        this.hayMas = true;
-        this.publicaciones = [];
-        this.cargarPublicaciones(true);
-    }
-
-
-}*/
+}
