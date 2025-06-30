@@ -8,34 +8,44 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // Evitar agregar token a login y registro
+  // Excluir endpoints públicos
   if (req.url.includes('/auth/login') || req.url.includes('/auth/registro')) {
     return next(req);
   }
 
+  // Manejo seguro para SSR
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
-  let authReq = req;
-
-  if (token) {
-    authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-  }
+  // Clonar request y agregar token
+  const authReq = token 
+    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
+    : req;
 
   return next(authReq).pipe(
     catchError((error) => {
-      // Si el backend devuelve 401, cerrar sesión y redirigir
       if (error.status === 401) {
-        authService.logout(); // borra el token, limpia timers, redirige
-        console.warn('Token expirado o inválido. Redirigiendo al login.');
+        // 1. Limpiar estado de autenticación
+        authService.logout();
+        
+        // 2. Redirigir a login (según consigna)
+        router.navigate(['/login'], {
+          queryParams: { sessionExpired: true }
+        });
+        
+        // 3. Opcional: Mostrar mensaje al usuario
+        if (typeof window !== 'undefined') {
+          authService.showMessage('Tu sesión ha expirado', true);
+        }
       }
-      return throwError(() => error); // importante para seguir el flujo de errores
+      
+      // Propagamos el error para que otros manejadores puedan procesarlo
+      return throwError(() => error);
     })
   );
+  
 };
+
+
 
 
 

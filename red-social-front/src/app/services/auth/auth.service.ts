@@ -6,7 +6,7 @@ import { Publicacion } from '../../core/models/publicacion.model';
 import { Router } from '@angular/router';
 import { ModalRenovarSessionComponent } from '../../components/shared/modal-renovar-session/modal-renovar-session.component';
 import { MatDialog } from '@angular/material/dialog';
-
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Crear interfaces para las respuestas:
 interface LoginResponse {
@@ -28,7 +28,7 @@ export class AuthService {
   private warningTimer: any; // 🆕 10 min
   private logoutTimer: any;  // 🆕 15 min
 
-  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {}
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog, private snackBar: MatSnackBar) {}
 
   // ------------------------
   // 1. LOGIN: guarda token
@@ -180,7 +180,7 @@ export class AuthService {
 
     // ❌ A los 15 min (900.000 ms) → logout directo
     this.logoutTimer = setTimeout(() => {
-      alert('Tu sesión ha expirado. Volvé a iniciar sesión.');
+      this.showMessage('Tu sesión ha expirado. Por favor inicia sesión nuevamente.', true);
       this.logout();
     }, 15 * 60 * 1000);
   }
@@ -202,27 +202,30 @@ export class AuthService {
   }
 
 
+  showMessage(message: string, isError: boolean = false) {
+        this.snackBar.open(message, 'Cerrar', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: isError ? 'snackbar-error' : 'snackbar-success'
+        });
+    }
   // 🆕 --------------------------
   // MOSTRAR AVISO DE RENOVACIÓN
   // --------------------------
   abrirModalRenovacion(): void {
-  const dialogRef = this.dialog.open(ModalRenovarSessionComponent);
-
-  dialogRef.afterClosed().subscribe((resultado: boolean) => {
-    if (resultado) {
-      this.refrescarToken().subscribe({
-        next: (res) => {
-          localStorage.setItem('token', res.token);
-          this.iniciarContadoresSesion();
-        },
-        error: () => {
-          alert('No se pudo renovar la sesión.');
-          this.logout();
-        }
-      });
-    }
-  });
-
-  
-}
+    const dialogRef = this.dialog.open(ModalRenovarSessionComponent);
+    
+    dialogRef.afterClosed().subscribe((resultado: boolean) => {
+      if (resultado) {
+        this.refrescarToken().subscribe({
+          next: (res) => {
+            localStorage.setItem('token', res.token);
+            this.iniciarContadoresSesion(); // Reinicia contadores
+          },
+          error: () => this.logout()
+        });
+      }
+    });
+  }
 }
