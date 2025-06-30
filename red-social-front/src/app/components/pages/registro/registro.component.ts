@@ -6,10 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../../services/auth/auth.service';
 
+import { RouterLink } from '@angular/router';
 @Component({
     standalone: true,
     selector: 'app-registro',
-    imports: [CommonModule, FormsModule, MatSnackBarModule],
+    imports: [CommonModule, FormsModule, MatSnackBarModule, RouterLink],
     templateUrl: './registro.component.html',
     styleUrl: './registro.component.css'
 })

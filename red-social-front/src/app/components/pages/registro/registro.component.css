@@ -179,3 +179,21 @@ select.form-input {
     cursor: not-allowed;
 }
 
+
+.login-link {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--color-dark-gray);
+}
+
+.login-link a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}

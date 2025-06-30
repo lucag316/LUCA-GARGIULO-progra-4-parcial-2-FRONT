@@ -8,10 +8,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AuthService } from '../../../services/auth/auth.service';
 
+import { RouterLink } from '@angular/router';
+
 @Component({
     standalone: true,
     selector: 'app-login',
-    imports: [MatSnackBarModule, CommonModule, FormsModule],
+    imports: [MatSnackBarModule, CommonModule, FormsModule, RouterLink],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css'
 })

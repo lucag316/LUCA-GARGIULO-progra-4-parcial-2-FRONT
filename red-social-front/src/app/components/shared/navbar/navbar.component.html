@@ -1,7 +1,5 @@
 <div class="navbar-container">
     <nav class="navbar">
-        <a class="navbar-link" routerLink="/login" routerLinkActive="active-link">Login</a> |
-        <a class="navbar-link" routerLink="/registro" routerLinkActive="active-link" >Registro</a> |
         <a class="navbar-link" routerLink="/publicaciones" routerLinkActive="active-link" *ngIf="authService.estaLogueado()">
             Publicaciones
         </a> |
@@ -9,6 +7,11 @@
         Mi Perfil
         </a>
 
-        <button *ngIf="authService.estaLogueado()" (click)="logout()">Logout</button>
+        <button 
+            class="btn-logout" 
+            *ngIf="authService.estaLogueado()" 
+            (click)="logout()">
+            Cerrar sesión
+        </button>
     </nav>
 </div>

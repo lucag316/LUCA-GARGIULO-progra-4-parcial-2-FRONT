@@ -1,8 +1,6 @@
 
 <section>
-
-    <app-navbar />
+    <app-navbar *ngIf="mostrarNavbar" />
     <router-outlet />
-    <app-footer />
-
+    <app-footer *ngIf="mostrarFooter" />
 </section>
