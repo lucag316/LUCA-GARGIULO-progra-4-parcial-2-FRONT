@@ -1,0 +1,97 @@
+.estadisticas-wrapper {
+  max-width: 900px;
+  margin: 2em auto 0 auto; /* solo margin-top y auto horizontales, sin margin-bottom para no empujar footer */
+  padding: 1em;
+  color: var(--color-dark-blue);
+  animation: fadeInUp 0.5s ease-in-out;
+  width: 100%;  /* que tome el ancho disponible */
+  flex-grow: 1; /* para que crezca si está dentro de un flex container */
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* importante para que no se rompa el flexbox scrolling */
+  overflow-y: auto; /* permite scroll si el contenido es alto */
+}
+.titulo-principal {
+  text-align: center;
+  margin-bottom: 1.5em;
+  font-size: 2em;
+  color: var(--color-primary);
+}
+
+/* Filtros de fecha */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  align-items: flex-end;
+  margin-bottom: 2em;
+}
+
+.campo-fecha {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 200px;
+}
+
+.campo-fecha label {
+  margin-bottom: 0.3em;
+  font-weight: bold;
+  color: var(--color-dark-gray);
+}
+
+.campo-fecha input {
+  padding: 0.5em;
+  border: 1px solid var(--color-dark-gray);
+  border-radius: 5px;
+  background-color: var(--color-white);
+  color: var(--color-dark-blue);
+}
+
+button[type="submit"] {
+  height: 38px;
+}
+
+/* Tarjetas de cada sección */
+.card {
+  background-color: var(--color-light-cyan);
+  border-radius: 12px;
+  padding: 1.5em;
+  margin-bottom: 2em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  margin-bottom: 1em;
+  color: var(--color-teal);
+}
+
+/* Texto de total comentarios */
+.comentarios-totales {
+  font-size: 1.2em;
+  text-align: center;
+  margin: 1em 0 0;
+  color: var(--color-dark-blue);
+}
+
+.card canvas {
+  width: 100% !important;
+  height: 350px !important; /* Aumentá o reducí según prefieras */
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1; /* o 16/9 si querés formato video */
+  max-height: 400px;
+}
+
+@media (min-width: 768px) {
+  .chart-container {
+    min-height: 400px; /* Más alto en pantallas grandes */
+  }
+}

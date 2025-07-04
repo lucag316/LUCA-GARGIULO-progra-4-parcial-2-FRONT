@@ -29,6 +29,20 @@ body {
     color: var(--color-dark-blue);
 }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
 a:hover {
     color: var(--color-primary);
 }

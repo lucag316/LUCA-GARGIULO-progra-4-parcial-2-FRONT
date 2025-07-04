@@ -7,68 +7,75 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  standalone: true,
-  selector: 'app-dashboard-estadisticas',
-  templateUrl: './dashboard-estadisticas.component.html',
-  styleUrls: ['./dashboard-estadisticas.component.css'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NgChartsModule],
+    standalone: true,
+    selector: 'app-dashboard-estadisticas',
+    templateUrl: './dashboard-estadisticas.component.html',
+    styleUrls: ['./dashboard-estadisticas.component.css'],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, NgChartsModule],
 })
 export class DashboardEstadisticasComponent implements OnInit {
-  form: FormGroup;
+    form: FormGroup;
 
-  // 📊 1. Publicaciones por usuario
-  publicacionesChart: ChartData<'bar'> = {
-    labels: [],
-    datasets: [{ data: [], label: 'Publicaciones por usuario' }]
-  };
+    // 📊 1. Publicaciones por usuario
+    publicacionesChart: ChartData<'bar'> = {
+        labels: [],
+        datasets: [{ data: [], label: 'Publicaciones por usuario' }]
+    };
 
-  // 💬 2. Comentarios por publicación
-  comentariosChart: ChartData<'bar'> = {
-    labels: [],
-    datasets: [{ data: [], label: 'Comentarios por publicación' }]
-  };
+    // 💬 2. Comentarios por publicación
+    comentariosChart: ChartData<'bar'> = {
+        labels: [],
+        datasets: [{ data: [], label: 'Comentarios por publicación' }]
+    };
 
-  chartOptions: ChartOptions = { responsive: true };
-  chartType: ChartType = 'bar';
-  chartTypeComentarios: ChartType = 'bar';
+    chartOptions: ChartOptions = { 
+        responsive: true,
+        maintainAspectRatio: false
+    };
+    chartType: ChartType = 'bar';
+    chartTypeComentarios: ChartType = 'bar';
 
-  // 🧮 3. Total comentarios
-  totalComentarios: number = 0;
+    // 🧮 3. Total comentarios
+    totalComentarios: number = 0;
 
-  constructor(
-    private estadisticasService: EstadisticasService,
-    private fb: FormBuilder
-  ) {
-    const hoy = new Date().toISOString().substring(0, 10);
-    this.form = this.fb.group({
-      desde: ['2024-01-01'],
-      hasta: [hoy]
-    });
-  }
+    constructor(
+        private estadisticasService: EstadisticasService,
+        private fb: FormBuilder
+    ) {
+        const hoy = new Date().toISOString().substring(0, 10);
+        this.form = this.fb.group({
+        desde: ['2024-01-01'],
+        hasta: [hoy]
+        });
+    }
 
-  ngOnInit(): void {
-    this.cargarEstadisticas();
-  }
+    ngOnInit(): void {
+        this.cargarEstadisticas();
+    }
 
-  cargarEstadisticas(): void {
-    const { desde, hasta } = this.form.value;
+    cargarEstadisticas(): void {
+        const { desde, hasta } = this.form.value;
 
     // 1. Publicaciones por usuario
     this.estadisticasService.getPublicacionesPorUsuario(desde, hasta).subscribe(data => {
-      this.publicacionesChart.labels = data.map(u => `${u.nombre} ${u.apellido}`);
-      this.publicacionesChart.datasets[0].data = data.map(u => u.totalPublicaciones);
+        this.publicacionesChart = {
+        labels: data.map(u => `${u.nombre} ${u.apellido}`),
+        datasets: [{ data: data.map(u => u.totalPublicaciones), label: 'Publicaciones por usuario' }]
+        };
     });
 
     // 2. Comentarios totales
     this.estadisticasService.getComentariosTotales(desde, hasta).subscribe(data => {
-      this.totalComentarios = data.totalComentarios;
-      console.log('Total comentarios:', this.totalComentarios);
+        this.totalComentarios = data.totalComentarios;
+        console.log('Total comentarios:', this.totalComentarios);
     });
 
     // 3. Comentarios por publicación
     this.estadisticasService.getComentariosPorPublicacion(desde, hasta).subscribe(data => {
-      this.comentariosChart.labels = data.map(p => p.titulo);
-      this.comentariosChart.datasets[0].data = data.map(p => p.totalComentarios);
+        this.comentariosChart = {
+        labels: data.map(p => p.titulo),
+        datasets: [{ data: data.map(p => p.totalComentarios), label: 'Comentarios por publicación' }]
+        };
     });
-  }
+    }
 }

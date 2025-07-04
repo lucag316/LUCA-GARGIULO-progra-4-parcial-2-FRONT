@@ -1,12 +1,20 @@
-<!-- Debug: Visualizar estado -->
-<div *ngIf="false" style="position: fixed; bottom: 0; left: 0; background: red; color: white; padding: 5px; z-index: 9999">
+<div class="layout-container">
+  <!-- Debug fijo solo para desarrollo -->
+  <div *ngIf="false" class="debug-bar">
     Debug: {{mostrarLoading ? 'Loading visible' : 'Loading oculto'}} | Ruta: {{router.url}}
-</div>
+  </div>
 
-<app-loading *ngIf="mostrarLoading"></app-loading>
+  <!-- Loading se muestra solo cuando está activo -->
+  <app-loading *ngIf="mostrarLoading"></app-loading>
 
-<div *ngIf="!mostrarLoading">
+  <!-- Contenido principal cuando no hay loading -->
+  <ng-container *ngIf="!mostrarLoading">
     <app-navbar *ngIf="mostrarNavbar"></app-navbar>
-    <router-outlet></router-outlet>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+
     <app-footer *ngIf="mostrarFooter"></app-footer>
+  </ng-container>
 </div>

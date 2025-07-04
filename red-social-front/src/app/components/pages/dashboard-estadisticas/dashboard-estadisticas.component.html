@@ -1,32 +1,45 @@
-<h2>Estadísticas de la Red Social</h2>
+<section class="estadisticas-wrapper">
+  <h2 class="titulo-principal">📈 Estadísticas de la Red Social</h2>
 
-<form [formGroup]="form" (ngSubmit)="cargarEstadisticas()" class="filtros">
-  <label>Desde:</label>
-  <input type="date" formControlName="desde">
-  <label>Hasta:</label>
-  <input type="date" formControlName="hasta">
-  <button type="submit">Actualizar</button>
-</form>
+  <form [formGroup]="form" (ngSubmit)="cargarEstadisticas()" class="filtros card">
+    <div class="campo-fecha">
+      <label for="desde">📅 Desde:</label>
+      <input type="date" id="desde" formControlName="desde">
+    </div>
+    <div class="campo-fecha">
+      <label for="hasta">📅 Hasta:</label>
+      <input type="date" id="hasta" formControlName="hasta">
+    </div>
+    <button type="submit" class="btn-primary">🔄 Actualizar</button>
+  </form>
 
-<hr>
+  <div class="chart-container">
 
-<h3>📊 Publicaciones por usuario</h3>
-<canvas baseChart
-  [data]="publicacionesChart"
-  [options]="chartOptions"
-  [type]="chartType">
-</canvas>
+  
 
-<hr>
+  <div class="card">
+    <h3>📊 Publicaciones por usuario</h3>
+    <canvas baseChart
+      [data]="publicacionesChart"
+      [options]="chartOptions"
+      [type]="chartType">
+    </canvas>
+  </div>
 
-<h3>🧮 Total de comentarios en el rango</h3>
-<p><strong>{{ totalComentarios }}</strong> comentarios realizados</p>
+  <div class="card">
+    <h3>🧮 Total de comentarios en el rango</h3>
+    <p class="comentarios-totales">
+      <strong>{{ totalComentarios }}</strong> comentarios realizados
+    </p>
+  </div>
 
-<hr>
-
-<h3>💬 Comentarios por publicación</h3>
-<canvas baseChart
-  [data]="comentariosChart"
-  [options]="chartOptions"
-  [type]="chartTypeComentarios">
-</canvas>
+  <div class="card">
+    <h3>💬 Comentarios por publicación</h3>
+    <canvas baseChart
+      [data]="comentariosChart"
+      [options]="chartOptions"
+      [type]="chartTypeComentarios">
+    </canvas>
+  </div>
+  </div>
+</section>
