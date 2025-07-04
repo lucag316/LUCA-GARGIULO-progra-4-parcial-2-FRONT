@@ -12,6 +12,7 @@ import { PublicacionComponent } from './components/pages/publicaciones/publicaci
 import { PublicacionDetalleComponent } from './components/pages/publicaciones/publicacion-detalle/publicacion-detalle.component';
 import { LoadingComponent } from './components/shared/loading/loading.component';
 import { DashboardUsuariosComponent } from './components/pages/dashboard-usuarios/dashboard-usuarios.component';
+import { DashboardEstadisticasComponent } from './components/pages/dashboard-estadisticas/dashboard-estadisticas.component';
 
 
 export const routes: Routes = [
@@ -56,6 +57,11 @@ export const routes: Routes = [
     {
         path: 'dashboard-usuarios',
         component: DashboardUsuariosComponent,
+        canActivate: [AuthGuard, AdminGuard]
+    },
+    {
+        path: 'dashboard-estadisticas',
+        component: DashboardEstadisticasComponent,
         canActivate: [AuthGuard, AdminGuard]
     },
     {

@@ -1,0 +1,32 @@
+<h2>Estadísticas de la Red Social</h2>
+
+<form [formGroup]="form" (ngSubmit)="cargarEstadisticas()" class="filtros">
+  <label>Desde:</label>
+  <input type="date" formControlName="desde">
+  <label>Hasta:</label>
+  <input type="date" formControlName="hasta">
+  <button type="submit">Actualizar</button>
+</form>
+
+<hr>
+
+<h3>📊 Publicaciones por usuario</h3>
+<canvas baseChart
+  [data]="publicacionesChart"
+  [options]="chartOptions"
+  [type]="chartType">
+</canvas>
+
+<hr>
+
+<h3>🧮 Total de comentarios en el rango</h3>
+<p><strong>{{ totalComentarios }}</strong> comentarios realizados</p>
+
+<hr>
+
+<h3>💬 Comentarios por publicación</h3>
+<canvas baseChart
+  [data]="comentariosChart"
+  [options]="chartOptions"
+  [type]="chartTypeComentarios">
+</canvas>
