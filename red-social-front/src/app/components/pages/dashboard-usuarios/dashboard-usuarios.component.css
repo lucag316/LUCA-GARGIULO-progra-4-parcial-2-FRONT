@@ -1,0 +1,201 @@
+
+
+/* Contenedor principal */
+.usuarios-wrapper {
+  max-width: 900px;
+  margin: 2em auto;
+  padding: 1.5em;
+  color: var(--color-dark-blue);
+  animation: fadeInUp 0.5s ease-in-out;
+}
+
+/* Título */
+.titulo-principal {
+  text-align: center;
+  margin-bottom: 1.5em;
+  font-size: 2rem;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* Formularios */
+.form-usuarios {
+  background-color: var(--color-light-cyan);
+  border-radius: 12px;
+  padding: 1.5em 2em;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 3em;
+}
+
+/* Fieldsets: separar grupos */
+.form-usuarios fieldset {
+  border: 2px solid var(--color-secondary);
+  border-radius: 10px;
+  padding: 1em 1.5em 2em 1.5em;
+  margin-bottom: 1.8em;
+}
+
+/* Legend */
+.form-usuarios legend {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--color-teal);
+  padding: 0 0.5em;
+}
+
+/* Inputs y select */
+.form-usuarios input,
+.form-usuarios select {
+  width: 100%;
+  padding: 0.5em 0.75em;
+  margin-top: 0.6em;
+  border: 1.8px solid var(--color-dark-gray);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--color-dark-blue);
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+}
+
+.form-usuarios input:focus,
+.form-usuarios select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 5px var(--color-primary);
+}
+
+/* Botón de registrar */
+.btn-registrar {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 600;
+  padding: 0.8em 1.6em;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  font-size: 1.1rem;
+  margin-top: 1em;
+}
+
+.btn-registrar:hover {
+  background-color: var(--color-secondary);
+}
+
+/* Línea divisoria */
+hr {
+  border: none;
+  border-top: 2px solid var(--color-secondary);
+  margin: 3em 0;
+}
+
+/* Tabla */
+.lista-usuarios table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.lista-usuarios thead {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.lista-usuarios th,
+.lista-usuarios td {
+  padding: 0.75em 1em;
+  text-align: left;
+  border-bottom: 1px solid var(--color-secondary);
+}
+
+/* Última fila sin border bottom */
+.lista-usuarios tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Filas intercaladas */
+.lista-usuarios tbody tr:nth-child(even) {
+  background-color: var(--color-light-cyan);
+}
+
+/* Botón en tabla */
+.btn-cambiar-estado {
+  background-color: var(--color-teal);
+  border: none;
+  padding: 0.4em 0.8em;
+  color: var(--color-white);
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cambiar-estado:hover {
+  background-color: #27a69a; /* un poco más oscuro que teal */
+}
+
+/* Estado activo / baja */
+.estado-activo {
+  color: green;
+  font-weight: 700;
+}
+
+.estado-baja {
+  color: var(--color-coral-red);
+  font-weight: 700;
+}
+
+/* Responsividad básica */
+@media (max-width: 600px) {
+  .form-usuarios fieldset {
+    padding: 1em;
+  }
+
+  .btn-registrar {
+    font-size: 1rem;
+  }
+
+  .lista-usuarios table,
+  .lista-usuarios thead,
+  .lista-usuarios tbody,
+  .lista-usuarios th,
+  .lista-usuarios td,
+  .lista-usuarios tr {
+    display: block;
+    width: 100%;
+  }
+
+  .lista-usuarios thead tr {
+    display: none;
+  }
+
+  .lista-usuarios tbody tr {
+    margin-bottom: 1.5em;
+    background-color: var(--color-light-cyan);
+    border-radius: 12px;
+    padding: 1em;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .lista-usuarios tbody td {
+    padding-left: 50%;
+    position: relative;
+    text-align: left;
+    border: none;
+  }
+
+  .lista-usuarios tbody td::before {
+    position: absolute;
+    top: 50%;
+    left: 1em;
+    transform: translateY(-50%);
+    font-weight: 700;
+    content: attr(data-label);
+    color: var(--color-dark-gray);
+  }
+}

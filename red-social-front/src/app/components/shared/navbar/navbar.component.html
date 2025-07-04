@@ -7,6 +7,24 @@
         Mi Perfil
         </a>
 
+            <!-- Mostrar solo si el perfil es administrador -->
+        <a 
+            class="navbar-link" 
+            routerLink="/dashboard-usuarios" 
+            routerLinkActive="active-link" 
+            *ngIf="authService.estaLogueado() && authService.getPerfilUser() === 'administrador'"
+        >
+        Usuarios
+        </a> |
+        <a 
+            class="navbar-link" 
+            routerLink="/dashboard-estadisticas" 
+            routerLinkActive="active-link" 
+            *ngIf="authService.estaLogueado() && authService.getPerfilUser() === 'administrador'"
+        >
+        Estadísticas
+        </a>
+
         <button 
             class="btn-logout" 
             *ngIf="authService.estaLogueado()" 

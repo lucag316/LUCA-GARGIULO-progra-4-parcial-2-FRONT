@@ -1,52 +1,65 @@
-<h2>Gestión de Usuarios</h2>
+<section class="usuarios-wrapper">
+  <h2 class="titulo-principal">Gestión de Usuarios</h2>
 
-<form [formGroup]="form" (ngSubmit)="registrarUsuario()">
-  <input formControlName="nombre" placeholder="Nombre" required>
-  <input formControlName="apellido" placeholder="Apellido" required>
-  <input formControlName="username" placeholder="Username" required>
-  
-  <!-- CAMBIO: antes usabas "correo", debe ser "email" -->
-  <input formControlName="email" placeholder="Correo" required type="email">
-  
-  <input formControlName="password" placeholder="Contraseña" required type="password">
-  
-  <!-- CAMPO OBLIGATORIO FALTANTE: fechaNacimiento -->
-  <input formControlName="fechaNacimiento" placeholder="Fecha de nacimiento" required type="date">
+  <section class="lista-usuarios">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre Completo</th>
+          <th>Username</th>
+          <th>Perfil</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of usuarios">
+          <td data-label="Nombre Completo">{{ user.nombre }} {{ user.apellido }}</td>
+          <td data-label="Username">{{ user.username }}</td>
+          <td data-label="Perfil">{{ user.perfil }}</td>
+          <td data-label="Estado">
+            <span [class.estado-activo]="user.isActive" [class.estado-baja]="!user.isActive">
+              {{ user.isActive ? 'Activo' : 'Baja' }}
+            </span>
+          </td>
+          <td data-label="Acciones">
+            <button (click)="cambiarEstado(user)" class="btn-cambiar-estado">
+              {{ user.isActive ? 'Dar de Baja' : 'Dar de Alta' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
 
-  <select formControlName="perfil">
-    <option value="usuario">Usuario</option>
-    <option value="administrador">Administrador</option>
-  </select>
+  <hr>
+  <h2 class="titulo-principal">Registrar un usuario</h2>
+  <form [formGroup]="form" (ngSubmit)="registrarUsuario()" class="form-usuarios">
+    <fieldset class="datos-personales">
+      <legend>Datos personales</legend>
 
-  <button type="submit">Registrar</button>
-</form>
+      <input formControlName="nombre" placeholder="Nombre" required aria-label="Nombre">
+      <input formControlName="apellido" placeholder="Apellido" required aria-label="Apellido">
+      <input formControlName="fechaNacimiento" type="date" required aria-label="Fecha de nacimiento">
+    </fieldset>
 
-<hr>
+    <fieldset class="datos-credenciales">
+      <legend>Credenciales</legend>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Username</th>
-      <th>Perfil</th>
-      <th>Estado</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of usuarios">
-      <td>{{ user.nombre }} {{ user.apellido }}</td>
-      <td>{{ user.username }}</td>
-      <td>{{ user.perfil }}</td>
-      
-      <!-- CAMBIO: mostrar 'Activo' si isActive es true -->
-      <td>{{ user.isActive ? 'Activo' : 'Baja' }}</td>
-      
-      <td>
-        <button (click)="cambiarEstado(user)">
-          {{ user.isActive ? 'Dar de Baja' : 'Dar de Alta' }}
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+      <input formControlName="username" placeholder="Nombre de usuario" required aria-label="Username">
+      <input formControlName="email" placeholder="Correo electrónico" type="email" required aria-label="Correo">
+      <input formControlName="password" placeholder="Contraseña" type="password" required aria-label="Contraseña">
+    </fieldset>
+
+    <fieldset class="perfil-usuario">
+      <legend>Perfil</legend>
+
+      <select formControlName="perfil" aria-label="Perfil de usuario">
+        <option value="usuario">Usuario</option>
+        <option value="administrador">Administrador</option>
+      </select>
+    </fieldset>
+
+    <button type="submit" class="btn-registrar">Registrar</button>
+  </form>
+</section>
