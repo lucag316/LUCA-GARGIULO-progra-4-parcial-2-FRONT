@@ -93,4 +93,15 @@ export class PublicacionesService {
             .set('limit', limit.toString())
         });
     }
+
+    /**
+     * Baja lógica de una publicación (solo admins)
+     */
+    bajaLogica(publicacionId: string): Observable<any> {
+        return this.http.post(`${this.baseUrl}/${publicacionId}/deshabilitar`, {}, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+    }
 }

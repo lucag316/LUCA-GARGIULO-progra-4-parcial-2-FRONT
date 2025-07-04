@@ -7,9 +7,12 @@ import { LoginComponent } from './components/pages/login/login.component';
 import { RegistroComponent } from './components/pages/registro/registro.component';
 import { PerfilComponent } from './components/pages/perfil/perfil.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { PublicacionComponent } from './components/pages/publicaciones/publicacion/publicacion.component';
 import { PublicacionDetalleComponent } from './components/pages/publicaciones/publicacion-detalle/publicacion-detalle.component';
 import { LoadingComponent } from './components/shared/loading/loading.component';
+import { DashboardUsuariosComponent } from './components/pages/dashboard-usuarios/dashboard-usuarios.component';
+
 
 export const routes: Routes = [
 
@@ -49,6 +52,11 @@ export const routes: Routes = [
     {
         path: 'loading',
         component: LoadingComponent,
+    },
+    {
+        path: 'dashboard-usuarios',
+        component: DashboardUsuariosComponent,
+        canActivate: [AuthGuard, AdminGuard]
     },
     {
         path: '**',

@@ -109,8 +109,20 @@ export class AuthService {
 
   // Método para obtener perfil del usuario logueado
   getPerfilUsuario(): Observable<Usuario> {
-    return this.http.get<Usuario>(`${this.baseUrl}/perfil`);
+    return this.http.get<Usuario>(`${this.baseUrl}/perfil`, {
+      headers: this.getAuthHeaders()
+    });
   }
+
+
+  getPerfilUser() {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.perfil; // <-- esto usalo en el front
+  }
+
   // Método para obtener publicaciones del usuario
   getPublicacionesUsuario(): Observable<{publicaciones: Publicacion[]}> {
     return this.http.get<{publicaciones: Publicacion[]}>(`${this.baseUrl}/mis-publicaciones`);
@@ -130,6 +142,16 @@ export class AuthService {
           })
       );
   }
+  getUsuarioActual(): { id: string; perfil: string } | null {
+  const payload = this.getPayload();
+  if (!payload) return null;
+
+  return {
+    id: payload.sub,
+    perfil: payload.rol // o 'perfil', depende del token
+  };
+}
+
   private getAuthHeaders() {
     const token = localStorage.getItem('token');
     return {
@@ -176,7 +198,7 @@ export class AuthService {
     // ⏰ A los 10 min (600.000 ms) → mostrar modal
     this.warningTimer = setTimeout(() => {
       this.abrirModalRenovacion();
-    }, 10 * 60 * 1000);
+    }, 10 *60 * 1000);
 
     // ❌ A los 15 min (900.000 ms) → logout directo
     this.logoutTimer = setTimeout(() => {

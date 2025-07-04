@@ -40,6 +40,8 @@ export class PublicacionComponent {
 
     hayMasComentarios = true;
 
+    esAdmin = false;
+
     constructor(
         private authService: AuthService,
         private publicacionesService: PublicacionesService,
@@ -52,6 +54,11 @@ export class PublicacionComponent {
         this.usuarioId = id;
         this.verificarLike();
         this.usuarioActualId = this.authService.getUsuarioId();
+
+        // Obtener perfil desde token para saber si es admin
+        const perfil = this.authService.getPerfilUser();
+        this.esAdmin = perfil === 'administrador';
+
         this.cargarComentarios();
     }
 
@@ -167,6 +174,22 @@ export class PublicacionComponent {
             },
             error: () => {
                 alert('Error al editar comentario');
+            }
+        });
+    }
+
+    darDeBajaPublicacion(): void {
+        if (!this.publicacion?._id) return;
+
+        this.publicacionesService.bajaLogica(this.publicacion._id).subscribe({
+            next: () => {
+                // Podés emitir un evento para que el padre recargue la lista o actualizar el estado local
+                alert('Publicación dada de baja correctamente');
+                // Opcional: podés ocultar o deshabilitar la publicación aquí
+            },
+            error: (err) => {
+                alert('Error al dar de baja la publicación');
+                console.error(err);
             }
         });
     }

@@ -1,0 +1,52 @@
+<h2>Gestión de Usuarios</h2>
+
+<form [formGroup]="form" (ngSubmit)="registrarUsuario()">
+  <input formControlName="nombre" placeholder="Nombre" required>
+  <input formControlName="apellido" placeholder="Apellido" required>
+  <input formControlName="username" placeholder="Username" required>
+  
+  <!-- CAMBIO: antes usabas "correo", debe ser "email" -->
+  <input formControlName="email" placeholder="Correo" required type="email">
+  
+  <input formControlName="password" placeholder="Contraseña" required type="password">
+  
+  <!-- CAMPO OBLIGATORIO FALTANTE: fechaNacimiento -->
+  <input formControlName="fechaNacimiento" placeholder="Fecha de nacimiento" required type="date">
+
+  <select formControlName="perfil">
+    <option value="usuario">Usuario</option>
+    <option value="administrador">Administrador</option>
+  </select>
+
+  <button type="submit">Registrar</button>
+</form>
+
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Username</th>
+      <th>Perfil</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of usuarios">
+      <td>{{ user.nombre }} {{ user.apellido }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.perfil }}</td>
+      
+      <!-- CAMBIO: mostrar 'Activo' si isActive es true -->
+      <td>{{ user.isActive ? 'Activo' : 'Baja' }}</td>
+      
+      <td>
+        <button (click)="cambiarEstado(user)">
+          {{ user.isActive ? 'Dar de Baja' : 'Dar de Alta' }}
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

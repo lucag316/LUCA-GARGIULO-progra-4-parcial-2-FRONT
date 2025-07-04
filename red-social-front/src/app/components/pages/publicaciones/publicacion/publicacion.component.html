@@ -34,6 +34,10 @@
     </button>
   </div>
 
+  <!-- Botón solo visible para administradores -->
+  <button *ngIf="esAdmin" (click)="darDeBajaPublicacion()">
+    Dar de baja publicación
+  </button>
   <!-- Comentarios -->
   <div *ngIf="modoDetalle">
     <h3>Comentarios</h3>

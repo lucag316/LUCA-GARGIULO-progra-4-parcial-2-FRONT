@@ -11,6 +11,7 @@
       [src]="usuario.imagenPerfil || 'assets/images/default-profile.jpeg'"
       alt="Foto de perfil"
       class="foto-perfil"
+      (error)="usuario.imagenPerfil = 'assets/images/default-profile.jpeg'"
     />
     
     <div class="info">
