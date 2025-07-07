@@ -6,8 +6,8 @@ import { PublicacionesComponent } from './components/pages/publicaciones/publica
 import { LoginComponent } from './components/pages/login/login.component';
 import { RegistroComponent } from './components/pages/registro/registro.component';
 import { PerfilComponent } from './components/pages/perfil/perfil.component';
-import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.guard';
+import { AuthGuard } from './core/guards/auth.guard';
+import { AdminGuard } from './core/guards/admin.guard';
 import { PublicacionComponent } from './components/pages/publicaciones/publicacion/publicacion.component';
 import { PublicacionDetalleComponent } from './components/pages/publicaciones/publicacion-detalle/publicacion-detalle.component';
 import { LoadingComponent } from './components/shared/loading/loading.component';

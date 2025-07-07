@@ -63,8 +63,8 @@ export class PublicacionesService {
         return this.http.get<Publicacion[]>(`http://localhost:3000/posts/user/${userId}?limit=${limit}`);
     }
 
-    crearPublicacion(data: FormData): Observable<any> {
-        return this.http.post(`${this.baseUrl}`, data); // POST /posts
+    crearPublicacion(data: FormData): Observable<Publicacion> {
+        return this.http.post<Publicacion>(this.baseUrl, data);
     }
 
     eliminarPublicacion(id: string): Observable<any> {

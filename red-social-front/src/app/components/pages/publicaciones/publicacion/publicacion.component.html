@@ -25,12 +25,10 @@
   <!-- Likes -->
   <div class="likes-container">
     <button (click)="toggleLike()"
-            [disabled]="procesandoLike"
-            [class.liked]="yaDioLike"
-            aria-label="Me gusta">
-      <span *ngIf="yaDioLike">💖</span>
-      <span *ngIf="!yaDioLike">🤍</span>
-      {{ publicacion.likes.length }}
+          [disabled]="procesandoLike"
+          [class.liked]="yaDioLike"
+          aria-label="Me gusta">
+          {{ yaDioLike ? '💖' : '🤍' }} {{ publicacion.likes.length }}
     </button>
   </div>
 

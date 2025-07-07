@@ -17,7 +17,6 @@ import { MatSpinner } from '@angular/material/progress-spinner';
     styleUrl: './publicacion.component.css'
 })
 
-
 export class PublicacionComponent {
     @Input() publicacion!: Publicacion;
     @Input() modoDetalle: boolean = false;
@@ -39,7 +38,6 @@ export class PublicacionComponent {
     usuarioActualId: string | null = null;
 
     hayMasComentarios = true;
-
     esAdmin = false;
 
     constructor(
@@ -50,12 +48,11 @@ export class PublicacionComponent {
 
     ngOnInit(): void {
         const id = this.authService.getUsuarioId();
-        if (!id) return; // Por seguridad
+        if (!id) return;
         this.usuarioId = id;
+        this.usuarioActualId = id;
         this.verificarLike();
-        this.usuarioActualId = this.authService.getUsuarioId();
 
-        // Obtener perfil desde token para saber si es admin
         const perfil = this.authService.getPerfilUser();
         this.esAdmin = perfil === 'administrador';
 
@@ -82,35 +79,35 @@ export class PublicacionComponent {
     toggleLike(): void {
         if (this.procesandoLike || !this.usuarioId) return;
 
+        const scrollY = window.scrollY;
         this.procesandoLike = true;
 
-        if (this.yaDioLike) {
-            this.publicacionesService.quitarLike(this.publicacion._id).subscribe({
-                next: () => {
-                    this.yaDioLike = false;
+        const likeObservable = this.yaDioLike
+            ? this.publicacionesService.quitarLike(this.publicacion._id)
+            : this.publicacionesService.darLike(this.publicacion._id);
+
+        likeObservable.subscribe({
+            next: () => {
+                if (this.yaDioLike) {
                     this.publicacion.likes = this.publicacion.likes.filter(id => id !== this.usuarioId);
-                    this.likeCambio.emit();
-                    this.procesandoLike = false;
-                },
-                error: () => {
-                    alert('Error al quitar like');
-                    this.procesandoLike = false;
-                }
-            });
-        } else {
-            this.publicacionesService.darLike(this.publicacion._id).subscribe({
-                next: () => {
-                    this.yaDioLike = true;
+                } else {
                     this.publicacion.likes.push(this.usuarioId);
-                    this.likeCambio.emit();
-                    this.procesandoLike = false;
-                },
-                error: () => {
-                    alert('Error al dar like');
-                    this.procesandoLike = false;
                 }
-            });
-        }
+
+                this.yaDioLike = !this.yaDioLike;
+                // Emitir solo si el padre realmente necesita saberlo (como para actualizar estadísticas)
+                this.likeCambio.emit();
+
+                // Restaurar el scroll en caso de redibujos
+                setTimeout(() => window.scrollTo({ top: scrollY }), 0);
+            },
+            error: () => {
+                alert('Error al actualizar like');
+            },
+            complete: () => {
+                this.procesandoLike = false;
+            }
+        });
     }
 
     agregarComentario(postId: string) {
@@ -122,15 +119,15 @@ export class PublicacionComponent {
         this.comentando = true;
         this.publicacionesService.addComentario(postId, this.nuevoComentario).subscribe({
             next: (res) => {
-            this.publicacion = res; // actualiza con el post que incluye el nuevo comentario
-            this.nuevoComentario = '';
-            this.errorComentario = '';
-            this.comentando = false;
+                this.publicacion = res;
+                this.nuevoComentario = '';
+                this.errorComentario = '';
+                this.comentando = false;
             },
             error: (err) => {
-            this.errorComentario = 'Error al enviar el comentario';
-            console.error(err);
-            this.comentando = false;
+                this.errorComentario = 'Error al enviar el comentario';
+                console.error(err);
+                this.comentando = false;
             }
         });
     }
@@ -139,21 +136,21 @@ export class PublicacionComponent {
         if (!this.publicacion || this.cargandoComentarios || !this.hayMasComentarios) return;
 
         this.cargandoComentarios = true;
-        
+
         this.comentariosService.getComentarios(this.publicacion._id, this.offset, this.limit)
-        .subscribe({
-            next: (res) => {
-                this.comentarios = [...this.comentarios, ...res.comentarios];
-                this.offset += this.limit;
-                this.hayMasComentarios = res.comentarios.length === this.limit;
-            },
-            error: (err) => {
-                console.error('Error cargando comentarios:', err);
-            },
-            complete: () => {
-                this.cargandoComentarios = false;
-            }
-        });
+            .subscribe({
+                next: (res) => {
+                    this.comentarios = [...this.comentarios, ...res.comentarios];
+                    this.offset += this.limit;
+                    this.hayMasComentarios = res.comentarios.length === this.limit;
+                },
+                error: (err) => {
+                    console.error('Error cargando comentarios:', err);
+                },
+                complete: () => {
+                    this.cargandoComentarios = false;
+                }
+            });
     }
 
     iniciarEdicion(comentario: Comentario): void {
@@ -183,9 +180,8 @@ export class PublicacionComponent {
 
         this.publicacionesService.bajaLogica(this.publicacion._id).subscribe({
             next: () => {
-                // Podés emitir un evento para que el padre recargue la lista o actualizar el estado local
                 alert('Publicación dada de baja correctamente');
-                // Opcional: podés ocultar o deshabilitar la publicación aquí
+                // Podrías emitir un evento para que el padre la remueva si querés
             },
             error: (err) => {
                 alert('Error al dar de baja la publicación');

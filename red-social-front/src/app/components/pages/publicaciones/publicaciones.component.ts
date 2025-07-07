@@ -64,26 +64,25 @@ export class PublicacionesComponent implements OnInit {
         const formData = new FormData();
         formData.append('titulo', this.nuevaPublicacion.titulo);
         formData.append('descripcion', this.nuevaPublicacion.descripcion);
-
         if (this.nuevaPublicacion.imagen) {
-            formData.append('imagenPost', this.nuevaPublicacion.imagen); // <- mismo nombre que en el backend
+            formData.append('imagenPost', this.nuevaPublicacion.imagen);
         }
 
         this.cargando = true;
 
         this.publicacionesService.crearPublicacion(formData).subscribe({
-            next: () => {
-                this.mostrarFormulario = false;
-                this.nuevaPublicacion = this.getNuevaPublicacion();
-                this.recargar(); // actualiza la lista
-                this.showMessage('Publicación creada');
+            next: (nueva) => {
+            this.mostrarFormulario = false;
+            this.nuevaPublicacion = this.getNuevaPublicacion();
+            this.publicaciones.unshift(nueva); // Agregar al principio de la lista
+            this.offset++; // porque agregamos uno más
+            this.showMessage('✅ Publicación creada');
             },
             error: (err) => {
-                this.showMessage('Error al crear publicación', true);
-                this.cargando = false;
+            this.showMessage('❌ Error al crear publicación', true);
             },
             complete: () => {
-                this.cargando = false;
+            this.cargando = false;
             }
         });
     }
@@ -176,4 +175,8 @@ export class PublicacionesComponent implements OnInit {
             panelClass: isError ? 'snackbar-error' : 'snackbar-success'
         });
     }
+
+    onLikeActualizado() {
+  // Por ahora no hacer nada, pero se podría usar para analytics, stats, etc.
+}
 }
