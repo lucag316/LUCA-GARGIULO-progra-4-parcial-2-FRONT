@@ -8,10 +8,9 @@
   <section class="card perfil">
     <!-- Foto de perfil circular -->
     <img
-      [src]="usuario.imagenPerfil || 'assets/images/default-profile.jpeg'"
+      [src]="usuario.imagenPerfil || 'assets/images/logoPerfil.jpg'" 
       alt="Foto de perfil"
       class="foto-perfil"
-      (error)="usuario.imagenPerfil = 'assets/images/default-profile.jpeg'"
     />
     
     <div class="info">
