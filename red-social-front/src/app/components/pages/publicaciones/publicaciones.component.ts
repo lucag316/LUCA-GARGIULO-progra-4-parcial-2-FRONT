@@ -84,8 +84,8 @@ export class PublicacionesComponent implements OnInit {
             next: (nueva) => {
             this.mostrarFormulario = false;
             this.nuevaPublicacion = this.getNuevaPublicacion();
-            this.publicaciones.unshift(nueva); // Agregar al principio de la lista
-            this.offset++; // porque agregamos uno más
+            this.publicaciones.unshift(nueva); 
+            this.offset++; 
             this.showMessage('✅ Publicación creada');
             },
             error: (err) => {
@@ -105,15 +105,15 @@ export class PublicacionesComponent implements OnInit {
         this.publicacionesService.eliminarPublicacion(id).subscribe({
             next: () => {
                 this.showMessage('✅ Publicación eliminada');
-                this.cargando = false;     // 👈 Mover esto antes
-                this.recargar();           // 👈 Ahora sí puede recargar correctamente
+                this.cargando = false;    
+                this.recargar();          
             },
             error: (err) => {
                 const msg = err.status === 403
                     ? 'No tenés permiso para eliminar esta publicación'
                     : 'Error al eliminar publicación';
                 this.showMessage(msg, true);
-                this.cargando = false; // 👈 También mover esto acá
+                this.cargando = false;
             }
         });
     }
@@ -145,7 +145,6 @@ export class PublicacionesComponent implements OnInit {
     }*/
 
     cargarPublicaciones(reiniciar = false): void {
-        // ⚠️ Elimina esta línea para que no bloquee llamadas forzadas
         // if (this.cargando || !this.hayMas) return;
 
         if (!this.hayMas && !reiniciar) return;
@@ -189,6 +188,6 @@ export class PublicacionesComponent implements OnInit {
     }
 
     onLikeActualizado() {
-  // Por ahora no hacer nada, pero se podría usar para analytics, stats, etc.
+
 }
 }

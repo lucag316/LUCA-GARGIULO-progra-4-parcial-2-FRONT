@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-publicacion-detalle',
   imports: [CommonModule, FormsModule, PublicacionComponent],
   templateUrl: './publicacion-detalle.component.html',
-  styleUrl: './publicacion-detalle.component.css' // opcional
+  styleUrl: './publicacion-detalle.component.css' 
 })
 export class PublicacionDetalleComponent implements OnInit {
   publicacion!: Publicacion;

@@ -65,7 +65,6 @@
     <div *ngIf="publicaciones.length === 0" class="no-posts">
       <mat-icon>sentiment_dissatisfied</mat-icon>
       <p>No has realizado ninguna publicación todavía.</p>
-      <button class="btn-primary" routerLink="/publicaciones/nueva">Crear primera publicación</button>
     </div>
 
     <div *ngFor="let pub of publicaciones" class="card publicacion">

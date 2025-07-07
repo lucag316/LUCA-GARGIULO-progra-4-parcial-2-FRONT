@@ -10,9 +10,7 @@ Aplicación web desarrollada con Angular que permite a usuarios registrados crea
 - [👨‍💻 Información del Proyecto](#-información-del-proyecto)
 - [🔗 Links importantes](#-links-importantes)
 - [🛠️ Tecnologías utilizadas](#-tecnologías-utilizadas)
-- [🎯 Objetivo General](#-objetivo-general)
 - [ Estructura de Carpetas](#-estructura-de-carpetas)
-- [🔧 Instalación](#-instalación)
 - [🟢 Sprint 1](#-sprint-1)
 - [🟢 Sprint 2](#-sprint-2)
 - [🟢 Sprint 3](#-sprint-3)
@@ -39,13 +37,6 @@ Aplicación web desarrollada con Angular que permite a usuarios registrados crea
 -🔗 **Deploy en Vercel**: *[https://parcial-2-front.vercel.app]*
 
 -📱 **Instalable como PWA**: desde Chrome, aparece opción “Instalar app”
-
----
-
-## 🎯 Objetivo General
-Desarrollar la interfaz cliente de una red social moderna con Angular, cumpliendo con autenticación segura, navegación protegida, gestión de publicaciones, sistema de comentarios, dashboard administrativo y visualización de estadísticas, todo con un diseño cuidado y progresivo.
-
-Desarrollar una aplicación web moderna, responsiva e interactiva utilizando Angular, que permita a los usuarios registrarse, iniciar sesión y participar en una red social con funcionalidades como realizar publicaciones, comentar, dar "me gusta", y gestionar su perfil personal. La interfaz debe proporcionar una experiencia de usuario intuitiva, con navegación fluida, validaciones en formularios y manejo adecuado de sesiones mediante tokens JWT, respetando buenas prácticas de diseño y seguridad.
 
 ---
 
@@ -87,14 +78,6 @@ Desarrollar una aplicación web moderna, responsiva e interactiva utilizando Ang
 - ⏱️ **Control de sesión y renovación automática del token**
 
 ---
-
-
-
-## 🧩 Estructura de Carpetas
-
-
----
-
 
 ## 🧑‍💼 Funcionalidades por Sprint
 
