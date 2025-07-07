@@ -31,6 +31,8 @@ export class PublicacionesComponent implements OnInit {
     nuevaPublicacion = this.getNuevaPublicacion();
     usuarioId: string | null = null;
 
+    esAdmin: boolean = false;
+
     constructor(
         private publicacionesService: PublicacionesService,
         private authService: AuthService,
@@ -40,6 +42,14 @@ export class PublicacionesComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        const id = this.authService.getUsuarioId();
+        if (id) {
+            this.usuarioId = id;
+        }
+
+        const perfil = this.authService.getPerfilUser();
+        this.esAdmin = perfil === 'administrador';
+
         this.cargarPublicaciones(true);
     }
 
@@ -94,17 +104,16 @@ export class PublicacionesComponent implements OnInit {
 
         this.publicacionesService.eliminarPublicacion(id).subscribe({
             next: () => {
-                this.showMessage('Publicación eliminada');
-                this.recargar(); // recargar lista
+                this.showMessage('✅ Publicación eliminada');
+                this.cargando = false;     // 👈 Mover esto antes
+                this.recargar();           // 👈 Ahora sí puede recargar correctamente
             },
             error: (err) => {
                 const msg = err.status === 403
-                    ? 'No tienes permiso para eliminar esta publicación'
+                    ? 'No tenés permiso para eliminar esta publicación'
                     : 'Error al eliminar publicación';
                 this.showMessage(msg, true);
-            },
-            complete: () => {
-                this.cargando = false;
+                this.cargando = false; // 👈 También mover esto acá
             }
         });
     }
@@ -136,7 +145,10 @@ export class PublicacionesComponent implements OnInit {
     }*/
 
     cargarPublicaciones(reiniciar = false): void {
-        if (this.cargando || !this.hayMas) return;
+        // ⚠️ Elimina esta línea para que no bloquee llamadas forzadas
+        // if (this.cargando || !this.hayMas) return;
+
+        if (!this.hayMas && !reiniciar) return;
 
         this.cargando = true;
         this.error = null;

@@ -111,26 +111,27 @@ export class PublicacionComponent {
     }
 
     agregarComentario(postId: string) {
-        if (!this.nuevoComentario.trim()) {
-            this.errorComentario = 'El comentario no puede estar vacío';
-            return;
-        }
+  if (!this.nuevoComentario.trim()) {
+    this.errorComentario = 'El comentario no puede estar vacío';
+    return;
+  }
 
-        this.comentando = true;
-        this.publicacionesService.addComentario(postId, this.nuevoComentario).subscribe({
-            next: (res) => {
-                this.publicacion = res;
-                this.nuevoComentario = '';
-                this.errorComentario = '';
-                this.comentando = false;
-            },
-            error: (err) => {
-                this.errorComentario = 'Error al enviar el comentario';
-                console.error(err);
-                this.comentando = false;
-            }
-        });
+  this.comentando = true;
+  this.publicacionesService.addComentario(postId, this.nuevoComentario).subscribe({
+    next: (res) => {
+      this.publicacion = res; // publicacion actualizada
+      this.comentarios = [...(res.comentarios || [])]; // comentarios actualizados
+      this.nuevoComentario = '';
+      this.errorComentario = '';
+      this.comentando = false;
+    },
+    error: (err) => {
+      this.errorComentario = 'Error al enviar el comentario';
+      console.error(err);
+      this.comentando = false;
     }
+  });
+}
 
     cargarComentarios(): void {
         if (!this.publicacion || this.cargandoComentarios || !this.hayMasComentarios) return;

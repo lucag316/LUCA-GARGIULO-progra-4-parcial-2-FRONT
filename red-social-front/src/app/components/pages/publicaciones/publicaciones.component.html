@@ -53,7 +53,7 @@
             <a [routerLink]="['/publicaciones', p._id]" class="btn-primary">Ver publicación</a>
 
             <button
-                *ngIf="usuarioId === p.autor._id"
+                *ngIf="esAdmin || usuarioId === p.autor._id"
                 class="btn-eliminar"
                 (click)="eliminarPublicacion(p._id)">
                 Eliminar
